@@ -13,6 +13,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -23,7 +28,9 @@ public class SecurityConfigurations {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        return http.csrf(csrf -> csrf.disable())
+        return http
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                .csrf(csrf -> csrf.disable())
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize ->
                         authorize
@@ -31,37 +38,6 @@ public class SecurityConfigurations {
                                 .requestMatchers(HttpMethod.GET, "/movies/**").permitAll()
 
                                 .requestMatchers( "/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**").permitAll()
-
-
-//                                .requestMatchers("/customer/**").hasAnyRole(Role.CUSTOMER.name())
-//                                .requestMatchers(HttpMethod.POST, "/customer/**").hasAnyAuthority(RolePermissions.CUSTOMER_CREATE.name())
-//                                .requestMatchers(HttpMethod.GET, "/customer/**").hasAnyAuthority(RolePermissions.CUSTOMER_READ.name())
-//                                .requestMatchers(HttpMethod.PUT, "/customer/**").hasAnyAuthority(RolePermissions.CUSTOMER_UPDATE.name())
-//                                .requestMatchers(HttpMethod.DELETE, "/customer/**").hasAnyAuthority(RolePermissions.CUSTOMER_DELETE.name())
-//
-//                                .requestMatchers("/cart/**").hasAnyRole(Role.CUSTOMER.name())
-//                                .requestMatchers(HttpMethod.POST, "/cart/**").hasAnyAuthority(RolePermissions.CUSTOMER_CREATE.name())
-//                                .requestMatchers(HttpMethod.GET, "/cart/**").hasAnyAuthority(RolePermissions.CUSTOMER_READ.name())
-//                                .requestMatchers(HttpMethod.PUT, "/cart/**").hasAnyAuthority(RolePermissions.CUSTOMER_UPDATE.name())
-//                                .requestMatchers(HttpMethod.DELETE, "/cart/**").hasAnyAuthority(RolePermissions.CUSTOMER_DELETE.name())
-//
-//
-//                                .requestMatchers("/order/**").hasAnyRole(Role.CUSTOMER.name())
-//                                .requestMatchers(HttpMethod.POST, "/cart/**").hasAnyAuthority(RolePermissions.CUSTOMER_CREATE.name())
-//                                .requestMatchers(HttpMethod.GET, "/cart/**").hasAnyAuthority(RolePermissions.CUSTOMER_READ.name())
-//
-//
-//                                .requestMatchers("/merchant/**").hasAnyRole(Role.MERCHANT.name())
-//                                .requestMatchers(HttpMethod.POST, "/merchant/**").hasAnyAuthority(RolePermissions.MERCHANT_CREATE.name())
-//                                .requestMatchers(HttpMethod.GET, "/merchant/**").hasAnyAuthority(RolePermissions.MERCHANT_READ.name())
-//                                .requestMatchers(HttpMethod.PUT, "/merchant/**").hasAnyAuthority(RolePermissions.MERCHANT_UPDATE.name())
-//                                .requestMatchers(HttpMethod.DELETE, "/merchant/**").hasAnyAuthority(RolePermissions.MERCHANT_DELETE.name())
-//
-//                                .requestMatchers("/admin/**").hasAnyRole(Role.ADMIN.name())
-//                                .requestMatchers(HttpMethod.POST, "/admin/**").hasAnyAuthority(RolePermissions.ADMIN_CREATE.name())
-//                                .requestMatchers(HttpMethod.GET, "/admin/**").hasAnyAuthority(RolePermissions.ADMIN_READ.name())
-//                                .requestMatchers(HttpMethod.PUT, "/admin/**").hasAnyAuthority(RolePermissions.ADMIN_UPDATE.name())
-//                                .requestMatchers(HttpMethod.DELETE, "/admin/**").hasAnyAuthority(RolePermissions.ADMIN_DELETE.name())
 
                                 .anyRequest().authenticated())
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
@@ -78,4 +54,21 @@ public class SecurityConfigurations {
         return new BCryptPasswordEncoder();
     }
 
+    // 2. Define the CorsConfigurationSource Bean
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+
+        // 🎯 KEY FIX: Add your frontend URL here
+        configuration.setAllowedOrigins(List.of("http://localhost:5173"));
+
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD"));
+        configuration.setAllowedHeaders(List.of("*"));
+        configuration.setAllowCredentials(true); // Must be true to use Authorization header
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        // Apply this configuration to all paths (/**)
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
 }
