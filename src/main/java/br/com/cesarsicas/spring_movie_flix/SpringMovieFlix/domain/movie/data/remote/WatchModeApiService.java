@@ -1,0 +1,25 @@
+package br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.domain.movie.data.remote;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+
+@Service
+public class WatchModeApiService {
+
+    String baseUrl = "https://api.watchmode.com/v1/";
+
+    @Value("${api.watchmode.key}")
+    private String secret;
+
+
+    @Autowired
+    RestTemplate restTemplate;
+
+    public ReleaseResponse getReleases(){
+        return restTemplate.getForObject(
+                baseUrl + "releases/?apiKey="+secret,
+                ReleaseResponse.class);
+    }
+}
