@@ -1,12 +1,13 @@
 package br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.domain.title;
 
-import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.domain.title.data.remote.WatchModeApiService;
+import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.domain.title.dto.TitleDetailsDto;
+import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.domain.title.dto.TitleReleasesDto;
+import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.domain.title.dto.TitleSearchDto;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/titles")
@@ -15,13 +16,22 @@ public class TitlesController {
     @Autowired
     TitlesService titlesService;
 
-    @Autowired
-    WatchModeApiService watchModeService;
-
-
     @GetMapping("/releases")
-    public ResponseEntity list(Pageable pageable) {
-        var movie = watchModeService.getReleases();
+    public ResponseEntity<List<TitleReleasesDto>> releases() {
+        var movie = titlesService.getReleases();
+        return ResponseEntity.ok(movie);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity details(@PathVariable long id) {
+        var details = titlesService.getTitleDetails(id);
+        return ResponseEntity.ok(details);
+    }
+
+
+    @GetMapping("/search")
+    public ResponseEntity<List<TitleSearchDto>>  search(@RequestParam String query) {
+        var movie = titlesService.searchTitles(query);
         return ResponseEntity.ok(movie);
     }
 }

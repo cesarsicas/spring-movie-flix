@@ -1,6 +1,6 @@
 package br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.domain.title.dto;
 
-import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.domain.title.data.remote.Release;
+import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.domain.title.data.remote.model.Release;
 
 public record TitleReleasesDto(
         int id,
