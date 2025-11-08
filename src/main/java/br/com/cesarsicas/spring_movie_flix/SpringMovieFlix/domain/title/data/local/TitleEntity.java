@@ -1,18 +1,18 @@
-package br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.domain.movie.data.local;
+package br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.domain.title.data.local;
 
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
 
-@Table(name = "movies")
-@Entity(name = "movie")
+@Table(name = "titles")
+@Entity(name = "title")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
-public class MovieEntity {
+public class TitleEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

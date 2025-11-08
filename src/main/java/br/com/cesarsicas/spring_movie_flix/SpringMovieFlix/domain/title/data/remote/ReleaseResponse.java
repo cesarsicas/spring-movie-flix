@@ -1,4 +1,4 @@
-package br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.domain.movie.data.remote;
+package br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.domain.title.data.remote;
 
 import java.util.List;
 

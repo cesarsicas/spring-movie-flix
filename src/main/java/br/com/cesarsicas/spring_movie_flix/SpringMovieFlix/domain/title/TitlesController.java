@@ -1,6 +1,6 @@
-package br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.domain.movie;
+package br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.domain.title;
 
-import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.domain.movie.data.remote.WatchModeApiService;
+import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.domain.title.data.remote.WatchModeApiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -9,11 +9,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/movies")
-public class MovieController {
+@RequestMapping("/titles")
+public class TitlesController {
 
     @Autowired
-    MovieService movieService;
+    TitlesService titlesService;
 
     @Autowired
     WatchModeApiService watchModeService;

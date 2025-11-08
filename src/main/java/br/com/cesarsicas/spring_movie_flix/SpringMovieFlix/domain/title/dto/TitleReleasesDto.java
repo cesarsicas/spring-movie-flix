@@ -1,8 +1,8 @@
-package br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.domain.movie.dto;
+package br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.domain.title.dto;
 
-import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.domain.movie.data.remote.Release;
+import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.domain.title.data.remote.Release;
 
-public record MovieReleasesDto(
+public record TitleReleasesDto(
         int id,
         String title,
         String type,
@@ -17,7 +17,7 @@ public record MovieReleasesDto(
         Integer is_original
 ){
 
-    public MovieReleasesDto (Release release){
+    public TitleReleasesDto(Release release){
          this(
                 release.id(),
                 release.title(),
