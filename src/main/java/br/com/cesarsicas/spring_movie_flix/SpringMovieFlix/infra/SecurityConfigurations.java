@@ -1,5 +1,7 @@
 package br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.infra;
 
+import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.domain.user.Role;
+import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.domain.user.RolePermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -36,8 +38,15 @@ public class SecurityConfigurations {
                         authorize
                                 .requestMatchers(HttpMethod.POST, "/auth/**").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/titles/**").permitAll()
-
                                 .requestMatchers( "/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**").permitAll()
+
+
+                                .requestMatchers("/default/**").hasAnyRole(Role.DEFAULT.name())
+                                .requestMatchers(HttpMethod.POST, "/default/**").hasAnyAuthority(RolePermissions.DEFAULT_CREATE.name())
+                                .requestMatchers(HttpMethod.GET, "/default/**").hasAnyAuthority(RolePermissions.DEFAULT_CREATE.name())
+                                .requestMatchers(HttpMethod.PUT, "/default/**").hasAnyAuthority(RolePermissions.DEFAULT_CREATE.name())
+                                .requestMatchers(HttpMethod.DELETE, "/default/**").hasAnyAuthority(RolePermissions.DEFAULT_CREATE.name())
+
 
                                 .anyRequest().authenticated())
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)

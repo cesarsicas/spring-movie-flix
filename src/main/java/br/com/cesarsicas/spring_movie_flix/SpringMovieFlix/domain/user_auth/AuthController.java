@@ -41,7 +41,7 @@ public class AuthController {
 
     }
 
-    @PostMapping("/register")
+    @PostMapping("/signup")
     @Transactional
     public ResponseEntity register(@RequestBody @Valid RegisterDto registerDto) {
         userService.saveUser(new User(registerDto));
