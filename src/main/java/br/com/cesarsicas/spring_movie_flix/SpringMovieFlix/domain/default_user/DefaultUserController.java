@@ -31,8 +31,8 @@ public class DefaultUserController {
             @AuthenticationPrincipal UserEntity user,
             @RequestBody @Valid CreateUpdateDefaultUserDto data) {
         try {
-            service.createOrUpdateDefaultUser(user, data);
-            return ResponseEntity.ok().build();
+            var defaultUserDto = service.createOrUpdateDefaultUser(user, data);
+            return ResponseEntity.ok(defaultUserDto);
         }
         catch (Exception e){
             return  ResponseEntity.internalServerError().build();

@@ -29,7 +29,7 @@ public class DefaultUserService {
     }
 
     @Transactional
-    public void createOrUpdateDefaultUser(UserEntity user, CreateUpdateDefaultUserDto data) {
+    public GetDefaultUserDto createOrUpdateDefaultUser(UserEntity user, CreateUpdateDefaultUserDto data) {
         var userEntityOptional = repository.findByUser(user);
 
         DefaultUserEntity entity;
@@ -41,6 +41,6 @@ public class DefaultUserService {
         } else {
             entity = new DefaultUserEntity(data);
         }
-        repository.save(entity);
+        return new GetDefaultUserDto(repository.save(entity));
     }
 }
