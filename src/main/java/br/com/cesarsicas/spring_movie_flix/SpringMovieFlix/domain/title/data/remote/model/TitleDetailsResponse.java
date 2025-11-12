@@ -3,7 +3,7 @@ import java.util.List;
 import java.util.Optional;
 
 public record TitleDetailsResponse(
-        int id,
+        Long id,
         String title,
         String original_title,
         String plot_overview,

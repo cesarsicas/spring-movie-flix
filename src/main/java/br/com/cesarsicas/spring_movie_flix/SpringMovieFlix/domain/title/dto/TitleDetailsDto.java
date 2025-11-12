@@ -1,12 +1,14 @@
 package br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.domain.title.dto;
 
+import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.domain.review.data.ReviewEntity;
+import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.domain.review.dto.GetReviewDto;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.domain.title.data.remote.model.TitleDetailsResponse;
 
 import java.util.List;
 import java.util.Optional;
 
 public record TitleDetailsDto(
-        int id,
+        Long id,
         String title,
         String original_title,
         String plot_overview,

@@ -47,6 +47,10 @@ public class SecurityConfigurations {
                                 .requestMatchers(HttpMethod.PUT, "/default/**").hasAnyAuthority(RolePermissions.DEFAULT_CREATE.name())
                                 .requestMatchers(HttpMethod.DELETE, "/default/**").hasAnyAuthority(RolePermissions.DEFAULT_CREATE.name())
 
+                                .requestMatchers("/reviews/**").hasAnyRole(Role.DEFAULT.name())
+                                .requestMatchers(HttpMethod.POST, "/reviews/**").hasAnyAuthority(RolePermissions.DEFAULT_CREATE.name())
+                                .requestMatchers(HttpMethod.GET, "/reviews/**").hasAnyAuthority(RolePermissions.DEFAULT_CREATE.name())
+
 
                                 .anyRequest().authenticated())
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)

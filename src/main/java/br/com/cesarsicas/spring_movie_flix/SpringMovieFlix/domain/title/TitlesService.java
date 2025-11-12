@@ -1,5 +1,7 @@
 package br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.domain.title;
 
+import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.domain.review.data.ReviewRepository;
+import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.domain.review.dto.GetReviewDto;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.domain.title.data.remote.WatchModeApiService;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.domain.title.dto.TitleDetailsDto;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.domain.title.dto.TitleReleasesDto;
@@ -16,6 +18,9 @@ public class TitlesService {
     @Autowired
     WatchModeApiService watchModeApi;
 
+    @Autowired
+    ReviewRepository reviewRepository;
+
     public List<TitleReleasesDto> getReleases() {
         return watchModeApi.getReleases().releases().stream().map(TitleReleasesDto::new)
                 .collect(Collectors.toList());
@@ -23,7 +28,9 @@ public class TitlesService {
 
     public TitleDetailsDto getTitleDetails(long id) {
         var details = watchModeApi.getTitleDetails(id);
-        return new TitleDetailsDto(details);
+
+        return new TitleDetailsDto(
+                details);
     }
 
     public List<TitleSearchDto> searchTitles(String query) {
@@ -31,5 +38,10 @@ public class TitlesService {
                 .collect(Collectors.toList());
     }
 
+
+//    testar
+//    enviar review
+//            get reviews
+//                    Title que tenha reviews
 
 }
