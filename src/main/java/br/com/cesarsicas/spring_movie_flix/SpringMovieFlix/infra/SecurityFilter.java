@@ -1,8 +1,8 @@
 package br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.infra;
 
 
-import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.domain.user.data.UserRepository;
-import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.domain.user_auth.TokenService;
+import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.user.data.UserRepository;
+import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.user_auth.TokenService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
