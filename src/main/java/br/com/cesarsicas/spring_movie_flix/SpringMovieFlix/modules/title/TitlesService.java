@@ -4,9 +4,9 @@ import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.review.data.R
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.local.ReleaseEntity;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.local.ReleasesRepository;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.remote.WatchModeApiService;
-import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.dto.TitleDetailsDto;
-import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.dto.TitleReleasesDto;
-import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.dto.TitleSearchDto;
+import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.api.dto.TitleDetailsDto;
+import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.api.dto.TitleReleasesDto;
+import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.api.dto.TitleSearchDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

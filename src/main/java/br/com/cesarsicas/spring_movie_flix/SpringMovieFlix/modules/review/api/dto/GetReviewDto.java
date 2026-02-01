@@ -1,4 +1,4 @@
-package br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.review.dto;
+package br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.review.api.dto;
 
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.review.data.ReviewEntity;
 

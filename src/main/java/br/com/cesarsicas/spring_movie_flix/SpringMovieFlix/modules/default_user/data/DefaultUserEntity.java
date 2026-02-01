@@ -1,6 +1,6 @@
 package br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.default_user.data;
 
-import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.default_user.dto.CreateUpdateDefaultUserDto;
+import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.default_user.api.dto.CreateUpdateDefaultUserDto;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.user.data.UserEntity;
 import jakarta.persistence.*;
 import lombok.*;

@@ -1,6 +1,6 @@
 package br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.local;
 
-import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.dto.TitleReleasesDto;
+import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.api.dto.TitleReleasesDto;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;

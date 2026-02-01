@@ -4,8 +4,8 @@ import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.default_user.
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.shared.exceptions.DefaultUserNotFoundException;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.review.data.ReviewEntity;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.review.data.ReviewRepository;
-import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.review.dto.GetReviewDto;
-import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.review.dto.SaveReviewDto;
+import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.review.api.dto.GetReviewDto;
+import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.review.api.dto.SaveReviewDto;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.user.data.UserEntity;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;

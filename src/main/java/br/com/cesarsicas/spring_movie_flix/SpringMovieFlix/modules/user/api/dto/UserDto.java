@@ -1,4 +1,4 @@
-package br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.user.dto;
+package br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.user.api.dto;
 
 
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.user.Role;

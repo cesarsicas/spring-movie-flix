@@ -1,4 +1,4 @@
-package br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.dto;
+package br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.api.dto;
 
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.local.ReleaseEntity;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.remote.model.Release;

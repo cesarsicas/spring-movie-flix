@@ -1,7 +1,7 @@
 package br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.review.data;
 
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.default_user.data.DefaultUserEntity;
-import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.review.dto.SaveReviewDto;
+import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.review.api.dto.SaveReviewDto;
 import jakarta.persistence.*;
 import lombok.*;
 

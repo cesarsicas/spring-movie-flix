@@ -1,7 +1,7 @@
 package br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.user;
 
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.user.data.UserEntity;
-import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.user.dto.UserDto;
+import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.user.api.dto.UserDto;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.user_auth.dto.RegisterDto;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 

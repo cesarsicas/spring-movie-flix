@@ -1,7 +1,8 @@
-package br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.default_user;
+package br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.default_user.api;
 
-import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.default_user.dto.GetDefaultUserDto;
-import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.default_user.dto.CreateUpdateDefaultUserDto;
+import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.default_user.DefaultUserService;
+import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.default_user.api.dto.GetDefaultUserDto;
+import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.default_user.api.dto.CreateUpdateDefaultUserDto;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.shared.exceptions.DefaultUserNotFoundException;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.user.data.UserEntity;
 import jakarta.validation.Valid;

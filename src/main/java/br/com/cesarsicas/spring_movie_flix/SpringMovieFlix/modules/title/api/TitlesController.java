@@ -1,9 +1,10 @@
-package br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title;
+package br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.api;
 
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.review.ReviewsService;
-import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.review.dto.GetReviewDto;
-import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.dto.TitleReleasesDto;
-import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.dto.TitleSearchDto;
+import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.review.api.dto.GetReviewDto;
+import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.TitlesService;
+import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.api.dto.TitleReleasesDto;
+import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.api.dto.TitleSearchDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
