@@ -1,11 +1,12 @@
-package br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.user_auth;
+package br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.user_auth.api;
 
-import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.user.User;
-import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.user.UserService;
+import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.user.domain.User;
+import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.user.service.UserService;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.user.data.UserEntity;
-import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.user_auth.dto.LoginDto;
-import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.user_auth.dto.RegisterDto;
-import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.user_auth.dto.TokenJWTDto;
+import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.user_auth.service.TokenService;
+import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.user_auth.api.dto.LoginDto;
+import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.user_auth.api.dto.RegisterDto;
+import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.user_auth.api.dto.TokenJWTDto;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

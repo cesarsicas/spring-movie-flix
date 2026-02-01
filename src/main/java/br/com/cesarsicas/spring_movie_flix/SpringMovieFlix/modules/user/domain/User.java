@@ -1,8 +1,8 @@
-package br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.user;
+package br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.user.domain;
 
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.user.data.UserEntity;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.user.api.dto.UserDto;
-import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.user_auth.dto.RegisterDto;
+import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.user_auth.api.dto.RegisterDto;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 public record User(long id, String login, String password, Role role, boolean isActive) {

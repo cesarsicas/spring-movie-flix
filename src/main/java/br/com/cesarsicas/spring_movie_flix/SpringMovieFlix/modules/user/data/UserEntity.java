@@ -1,7 +1,7 @@
 package br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.user.data;
 
-import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.user.Role;
-import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.user.User;
+import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.user.domain.Role;
+import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.user.domain.User;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;

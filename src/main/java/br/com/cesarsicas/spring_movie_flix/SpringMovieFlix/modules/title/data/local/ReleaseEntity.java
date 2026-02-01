@@ -1,6 +1,6 @@
 package br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.local;
 
-import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.api.dto.TitleReleasesDto;
+import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.domain.Release;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -29,18 +29,18 @@ public class ReleaseEntity {
     private String source_name;
     private Integer is_original;
 
-    public ReleaseEntity(TitleReleasesDto titleReleasesDto) {
-        this.id = titleReleasesDto.id();
-        this.title = titleReleasesDto.title();
-        this.type = titleReleasesDto.type();
-        this.imdb_id = titleReleasesDto.imdb_id();
-        this.tmdb_id = titleReleasesDto.tmdb_id();
-        this.tmdb_type = titleReleasesDto.tmdb_type();
-        this.season_number = titleReleasesDto.season_number();
-        this.poster_url = titleReleasesDto.poster_url();
-        this.source_release_date = titleReleasesDto.source_release_date();
-        this.source_id = titleReleasesDto.source_id();
-        this.source_name = titleReleasesDto.source_name();
-        this.is_original = titleReleasesDto.is_original();
+    public ReleaseEntity(Release release) {
+        this.id = release.getId();
+        this.title = release.getTitle();
+        this.type = release.getType();
+        this.imdb_id = release.getImdb_id();
+        this.tmdb_id = release.getTmdb_id();
+        this.tmdb_type = release.getTmdb_type();
+        this.season_number = release.getSeason_number();
+        this.poster_url = release.getPoster_url();
+        this.source_release_date = release.getSource_release_date();
+        this.source_id = release.getSource_id();
+        this.source_name = release.getSource_name();
+        this.is_original = release.getIs_original();
     }
 }

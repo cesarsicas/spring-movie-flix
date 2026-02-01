@@ -1,7 +1,7 @@
 package br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.infra;
 
-import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.user.Role;
-import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.user.RolePermissions;
+import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.user.domain.Role;
+import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.user.domain.RolePermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

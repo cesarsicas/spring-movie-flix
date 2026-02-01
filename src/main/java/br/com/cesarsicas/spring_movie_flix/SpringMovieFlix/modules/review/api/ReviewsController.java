@@ -1,6 +1,6 @@
 package br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.review.api;
 
-import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.review.ReviewsService;
+import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.review.service.ReviewsService;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.review.api.dto.GetReviewDto;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.review.api.dto.SaveReviewDto;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.user.data.UserEntity;

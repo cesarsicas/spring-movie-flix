@@ -1,8 +1,8 @@
 package br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.user.api.dto;
 
 
-import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.user.Role;
-import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.user.User;
+import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.user.domain.Role;
+import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.user.domain.User;
 import jakarta.validation.constraints.NotEmpty;
 
 public record UserDto(

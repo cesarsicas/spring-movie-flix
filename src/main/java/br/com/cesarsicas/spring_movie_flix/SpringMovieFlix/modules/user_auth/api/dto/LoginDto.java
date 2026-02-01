@@ -1,4 +1,4 @@
-package br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.user_auth.dto;
+package br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.user_auth.api.dto;
 
 import jakarta.validation.constraints.NotEmpty;
 

@@ -1,5 +1,6 @@
-package br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.user;
+package br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.user.service;
 
+import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.user.domain.User;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.user.data.UserEntity;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.user.data.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,12 +1,15 @@
-package br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title;
+package br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.service;
 
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.review.data.ReviewRepository;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.local.ReleaseEntity;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.local.ReleasesRepository;
+import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.mappers.ReleaseMapper;
+import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.mappers.ReleaseResponseMapper;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.remote.WatchModeApiService;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.api.dto.TitleDetailsDto;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.api.dto.TitleReleasesDto;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.api.dto.TitleSearchDto;
+import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.domain.Release;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,18 +28,17 @@ public class TitlesService {
     @Autowired
     ReleasesRepository releasesRepository;
 
-    public List<TitleReleasesDto> getReleases(Boolean useCache) {
+    public List<Release> getReleases(Boolean useCache) {
         if (useCache){
-            return releasesRepository.findAll().stream().map(TitleReleasesDto::new)
-                    .toList();
+            return releasesRepository.findAll().stream().map(ReleaseMapper::toDomain).toList();
         }
 
-        var dtos = watchModeApi.getReleases().releases().stream().map(TitleReleasesDto::new)
+        var releases = watchModeApi.getReleases().releases().stream().map(ReleaseResponseMapper::toDomain)
                 .toList();
 
-        var entities = dtos.stream().map(ReleaseEntity::new).toList();
-
-
+        var entities = releases.stream().map(ReleaseEntity::new).toList();
+        releasesRepository.saveAll(entities);
+        return releases;
     }
 
     public TitleDetailsDto getTitleDetails(long id) {

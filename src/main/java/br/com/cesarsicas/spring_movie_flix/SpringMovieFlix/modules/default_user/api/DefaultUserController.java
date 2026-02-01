@@ -1,6 +1,6 @@
 package br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.default_user.api;
 
-import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.default_user.DefaultUserService;
+import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.default_user.service.DefaultUserService;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.default_user.api.dto.GetDefaultUserDto;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.default_user.api.dto.CreateUpdateDefaultUserDto;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.shared.exceptions.DefaultUserNotFoundException;
