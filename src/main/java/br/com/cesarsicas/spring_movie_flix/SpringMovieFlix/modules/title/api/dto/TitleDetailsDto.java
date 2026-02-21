@@ -1,6 +1,7 @@
 package br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.api.dto;
 
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.remote.model.TitleDetailsResponse;
+import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.domain.TitleDetails;
 
 import java.util.List;
 import java.util.Optional;
@@ -62,6 +63,37 @@ public record TitleDetailsDto(
                 detailsResponse.trailer(),
                 detailsResponse.trailer_thumbnail(),
                 detailsResponse.relevance_percentile()
+        );
+    }
+
+    public TitleDetailsDto(TitleDetails details) {
+        this(
+                details.id(),
+                details.title(),
+                details.original_title(),
+                details.plot_overview(),
+                details.type(),
+                details.runtime_minutes(),
+                details.year(),
+                details.end_year(),
+                details.release_date(),
+                details.imdb_id(),
+                details.tmdb_id(),
+                details.tmdb_type(),
+                details.genres(),
+                details.genre_names(),
+                details.user_rating(),
+                details.critic_score(),
+                details.us_rating(),
+                details.poster(),
+                details.backdrop(),
+                details.original_language(),
+                details.similar_titles(),
+                details.networks(),
+                details.network_names(),
+                details.trailer(),
+                details.trailer_thumbnail(),
+                details.relevance_percentile()
         );
     }
 

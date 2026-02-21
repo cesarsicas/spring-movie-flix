@@ -1,29 +1,25 @@
 package br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.service;
 
-import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.review.data.ReviewRepository;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.local.ReleaseEntity;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.local.ReleasesRepository;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.mappers.ReleaseMapper;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.mappers.ReleaseResponseMapper;
+import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.mappers.TitleDetailsResponseMapper;
+import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.mappers.TitleSearchMapper;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.remote.WatchModeApiService;
-import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.api.dto.TitleDetailsDto;
-import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.api.dto.TitleReleasesDto;
-import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.api.dto.TitleSearchDto;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.domain.Release;
+import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.domain.TitleDetails;
+import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.domain.TitleSearch;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class TitlesService {
 
     @Autowired
     WatchModeApiService watchModeApi;
-
-    @Autowired
-    ReviewRepository reviewRepository;
 
     @Autowired
     ReleasesRepository releasesRepository;
@@ -41,16 +37,15 @@ public class TitlesService {
         return releases;
     }
 
-    public TitleDetailsDto getTitleDetails(long id) {
-        var details = watchModeApi.getTitleDetails(id);
-
-        return new TitleDetailsDto(
-                details);
+    public TitleDetails getTitleDetails(long id) {
+        var response = watchModeApi.getTitleDetails(id);
+        return TitleDetailsResponseMapper.toDomain(response);
     }
 
-    public List<TitleSearchDto> searchTitles(String query) {
-        return watchModeApi.getTitleSearch(query).results().stream().map(TitleSearchDto::new)
-                .collect(Collectors.toList());
+    public List<TitleSearch> searchTitles(String query) {
+        return watchModeApi.getTitleSearch(query).results().stream()
+                .map(TitleSearchMapper::toDomain)
+                .toList();
     }
 
 }

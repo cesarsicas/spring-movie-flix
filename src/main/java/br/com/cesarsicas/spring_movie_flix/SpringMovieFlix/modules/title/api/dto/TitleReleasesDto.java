@@ -49,4 +49,20 @@ public record TitleReleasesDto(
                 releaseEntity.getSource_name(),
                 releaseEntity.getIs_original());
     }
+
+    public TitleReleasesDto(br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.domain.Release release){
+        this(
+                release.getId(),
+                release.getTitle(),
+                release.getType(),
+                release.getImdb_id(),
+                release.getTmdb_id(),
+                release.getTmdb_type(),
+                release.getSeason_number(),
+                release.getPoster_url(),
+                release.getSource_release_date(),
+                release.getSource_id(),
+                release.getSource_name(),
+                release.getIs_original());
+    }
 }

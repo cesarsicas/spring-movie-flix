@@ -3,6 +3,7 @@ package br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.api;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.review.service.ReviewsService;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.review.api.dto.GetReviewDto;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.service.TitlesService;
+import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.api.dto.TitleDetailsDto;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.api.dto.TitleReleasesDto;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.api.dto.TitleSearchDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,16 +23,18 @@ public class TitlesController {
     ReviewsService reviewsService;
 
 
-    @GetMapping("/releases")
+   @GetMapping("/releases")
     public ResponseEntity<List<TitleReleasesDto>> releases(@RequestParam Boolean useCache) {
-        var movie = titlesService.getReleases(useCache);
+        var movie = titlesService.getReleases(useCache).stream()
+                .map(TitleReleasesDto::new)
+                .toList();
         return ResponseEntity.ok(movie);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity details(@PathVariable long id) {
+    public ResponseEntity<TitleDetailsDto> details(@PathVariable long id) {
         var details = titlesService.getTitleDetails(id);
-        return ResponseEntity.ok(details);
+        return ResponseEntity.ok(new TitleDetailsDto(details));
     }
 
     @GetMapping("/{id}/reviews")
@@ -47,8 +50,10 @@ public class TitlesController {
 
 
     @GetMapping("/search")
-    public ResponseEntity<List<TitleSearchDto>>  search(@RequestParam String query) {
-        var movie = titlesService.searchTitles(query);
-        return ResponseEntity.ok(movie);
+    public ResponseEntity<List<TitleSearchDto>> search(@RequestParam String query) {
+        var results = titlesService.searchTitles(query).stream()
+                .map(TitleSearchDto::new)
+                .toList();
+        return ResponseEntity.ok(results);
     }
 }
