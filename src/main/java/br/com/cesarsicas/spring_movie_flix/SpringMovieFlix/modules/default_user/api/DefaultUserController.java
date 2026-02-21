@@ -21,22 +21,22 @@ public class DefaultUserController {
     @GetMapping("/me")
     public ResponseEntity<GetDefaultUserDto> getMe(@AuthenticationPrincipal UserEntity user) {
         try {
-            return ResponseEntity.ok(service.getDefaultUser(user));
-        }
-        catch (DefaultUserNotFoundException e){
-            return  ResponseEntity.notFound().build();
+            var defaultUser = service.getDefaultUser(user);
+            return ResponseEntity.ok(new GetDefaultUserDto(defaultUser));
+        } catch (DefaultUserNotFoundException e) {
+            return ResponseEntity.notFound().build();
         }
     }
+
     @PostMapping("/me")
-    public ResponseEntity postMe(
+    public ResponseEntity<GetDefaultUserDto> postMe(
             @AuthenticationPrincipal UserEntity user,
             @RequestBody @Valid CreateUpdateDefaultUserDto data) {
         try {
-            var defaultUserDto = service.createOrUpdateDefaultUser(user, data);
-            return ResponseEntity.ok(defaultUserDto);
-        }
-        catch (Exception e){
-            return  ResponseEntity.internalServerError().build();
+            var defaultUser = service.createOrUpdateDefaultUser(user, data);
+            return ResponseEntity.ok(new GetDefaultUserDto(defaultUser));
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().build();
         }
     }
 }

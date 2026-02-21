@@ -40,11 +40,12 @@ public class TitlesController {
     @GetMapping("/{id}/reviews")
     public ResponseEntity<List<GetReviewDto>> getReviews(@PathVariable Long id) {
         try {
-            var reviews = reviewsService.getReviewsByExternalTitleId(id);
+            var reviews = reviewsService.getReviewsByExternalTitleId(id).stream()
+                    .map(GetReviewDto::new)
+                    .toList();
             return ResponseEntity.ok(reviews);
-        }
-        catch (Exception e){
-            return  ResponseEntity.internalServerError().build();
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().build();
         }
     }
 

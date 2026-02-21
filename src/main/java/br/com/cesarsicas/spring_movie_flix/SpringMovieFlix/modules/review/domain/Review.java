@@ -13,15 +13,17 @@ public class Review {
     private LocalDateTime datetime;
     private Long externalTitleId;
     private Long defaultUserId;
+    private String defaultUserName;
 
     public Review() {}
 
-    public Review(Long id, String review, LocalDateTime datetime, Long externalTitleId, Long defaultUserId) {
+    public Review(Long id, String review, LocalDateTime datetime, Long externalTitleId, Long defaultUserId, String defaultUserName) {
         this.id = id;
         this.review = review;
         this.datetime = datetime;
         this.externalTitleId = externalTitleId;
         this.defaultUserId = defaultUserId;
+        this.defaultUserName = defaultUserName;
     }
 
 }

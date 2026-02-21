@@ -23,11 +23,10 @@ public class ReviewsController {
             @RequestBody @Valid SaveReviewDto saveReviewDto
             ) {
 
-        try{
+        try {
             var review = reviewsService.saveReview(user, saveReviewDto);
-            return ResponseEntity.ok(review);
-        }
-        catch (Exception e){
+            return ResponseEntity.ok(new GetReviewDto(review));
+        } catch (Exception e) {
             return ResponseEntity.internalServerError().build();
         }
     }
