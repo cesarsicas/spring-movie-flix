@@ -1,5 +1,6 @@
 CREATE TABLE releases (
-	id SERIAL PRIMARY KEY,
+	id BIGSERIAL PRIMARY KEY,
+    external_id BIGSERIAL,
 	title VARCHAR(255) NOT NULL,
 	type VARCHAR(50),
 	imdb_id VARCHAR(20),

@@ -1,10 +1,11 @@
 package br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.api.dto;
 
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.local.ReleaseEntity;
-import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.remote.model.Release;
+import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.remote.model.ReleaseRemote;
 
 public record TitleReleasesDto(
-        int id,
+        long id,
+        long external_id,
         String title,
         String type,
         String imdb_id,
@@ -18,25 +19,27 @@ public record TitleReleasesDto(
         Integer is_original
 ){
 
-    public TitleReleasesDto(Release release){
-         this(
-                release.id(),
-                release.title(),
-                release.type(),
-                release.imdb_id(),
-                release.tmdb_id(),
-                release.tmdb_type(),
-                release.season_number(),
-                release.poster_url(),
-                release.source_release_date(),
-                release.source_id(),
-                release.source_name(),
-                release.is_original());
+    public TitleReleasesDto(ReleaseRemote releaseRemote) {
+        this(
+                0L,
+                releaseRemote.id(),  // API id is external_id; no local id when from remote
+                releaseRemote.title(),
+                releaseRemote.type(),
+                releaseRemote.imdb_id(),
+                releaseRemote.tmdb_id(),
+                releaseRemote.tmdb_type(),
+                releaseRemote.season_number(),
+                releaseRemote.poster_url(),
+                releaseRemote.source_release_date(),
+                releaseRemote.source_id(),
+                releaseRemote.source_name(),
+                releaseRemote.is_original());
     }
 
-    public TitleReleasesDto(ReleaseEntity releaseEntity){
+    public TitleReleasesDto(ReleaseEntity releaseEntity) {
         this(
                 releaseEntity.getId(),
+                releaseEntity.getExternal_id(),
                 releaseEntity.getTitle(),
                 releaseEntity.getType(),
                 releaseEntity.getImdb_id(),
@@ -50,9 +53,10 @@ public record TitleReleasesDto(
                 releaseEntity.getIs_original());
     }
 
-    public TitleReleasesDto(br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.domain.Release release){
+    public TitleReleasesDto(br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.domain.Release release) {
         this(
                 release.getId(),
+                release.getExternal_id(),
                 release.getTitle(),
                 release.getType(),
                 release.getImdb_id(),
