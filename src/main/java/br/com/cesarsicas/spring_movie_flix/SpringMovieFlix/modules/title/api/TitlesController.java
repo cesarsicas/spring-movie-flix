@@ -24,7 +24,8 @@ public class TitlesController {
 
 
    @GetMapping("/releases")
-    public ResponseEntity<List<TitleReleasesDto>> releases(@RequestParam Boolean useCache) {
+    public ResponseEntity<List<TitleReleasesDto>> releases(
+            @RequestParam(required = false, defaultValue = "false") Boolean useCache) {
         var movie = titlesService.getReleases(useCache).stream()
                 .map(TitleReleasesDto::new)
                 .toList();
