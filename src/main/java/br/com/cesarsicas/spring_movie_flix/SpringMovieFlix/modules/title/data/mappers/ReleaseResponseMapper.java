@@ -8,8 +8,8 @@ import java.util.stream.Collectors;
 
 public class ReleaseResponseMapper {
     public static List<Release> toDomainList(ReleaseResponse response) {
-        if (response == null || response.releaseRemotes() == null) return List.of();
-        return response.releaseRemotes().stream()
+        if (response == null || response.releases() == null) return List.of();
+        return response.releases().stream()
                 .map(ReleaseResponseMapper::toDomain)
                 .collect(Collectors.toList());
     }
