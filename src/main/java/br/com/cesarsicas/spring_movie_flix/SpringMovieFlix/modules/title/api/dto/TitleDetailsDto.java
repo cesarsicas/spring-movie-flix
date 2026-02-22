@@ -1,5 +1,6 @@
 package br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.api.dto;
 
+import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.local.TitleDetailsEntity;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.remote.model.TitleDetailsResponse;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.domain.TitleDetails;
 
@@ -95,6 +96,41 @@ public record TitleDetailsDto(
                 details.trailer_thumbnail(),
                 details.relevance_percentile()
         );
+    }
+
+    public TitleDetailsDto(TitleDetailsEntity entity) {
+        this(
+                entity.getExternalId(),
+                entity.getTitle(),
+                entity.getOriginal_title(),
+                entity.getPlot_overview(),
+                entity.getType(),
+                Optional.ofNullable(entity.getRuntime_minutes()),
+                Optional.ofNullable(entity.getYear()),
+                Optional.ofNullable(entity.getEnd_year()),
+                Optional.ofNullable(entity.getRelease_date()),
+                Optional.ofNullable(entity.getImdb_id()),
+                Optional.ofNullable(entity.getTmdb_id()),
+                Optional.ofNullable(entity.getTmdb_type()),
+                toOptional(entity.getGenres()),
+                toOptional(entity.getGenre_names()),
+                Optional.ofNullable(entity.getUser_rating()),
+                Optional.ofNullable(entity.getCritic_score()),
+                Optional.ofNullable(entity.getUs_rating()),
+                Optional.ofNullable(entity.getPoster()),
+                Optional.ofNullable(entity.getBackdrop()),
+                Optional.ofNullable(entity.getOriginal_language()),
+                toOptional(entity.getSimilar_titles()),
+                toOptional(entity.getNetworks()),
+                toOptional(entity.getNetwork_names()),
+                Optional.ofNullable(entity.getTrailer()),
+                Optional.ofNullable(entity.getTrailer_thumbnail()),
+                Optional.ofNullable(entity.getRelevance_percentile())
+        );
+    }
+
+    private static <T> Optional<List<T>> toOptional(List<T> list) {
+        return (list == null || list.isEmpty()) ? Optional.empty() : Optional.of(list);
     }
 
 }

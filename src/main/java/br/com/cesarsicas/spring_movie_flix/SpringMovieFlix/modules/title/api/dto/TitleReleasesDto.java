@@ -1,6 +1,6 @@
 package br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.api.dto;
 
-import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.local.ReleaseEntity;
+import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.local.TitleReleaseEntity;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.remote.model.ReleaseRemote;
 
 public record TitleReleasesDto(
@@ -36,7 +36,7 @@ public record TitleReleasesDto(
                 releaseRemote.is_original());
     }
 
-    public TitleReleasesDto(ReleaseEntity releaseEntity) {
+    public TitleReleasesDto(TitleReleaseEntity releaseEntity) {
         this(
                 releaseEntity.getId(),
                 releaseEntity.getExternal_id(),

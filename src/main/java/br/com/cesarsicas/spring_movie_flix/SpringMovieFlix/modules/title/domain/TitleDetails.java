@@ -5,6 +5,7 @@ import java.util.Optional;
 
 public record TitleDetails(
         Long id,
+        Long externalId,
         String title,
         String original_title,
         String plot_overview,

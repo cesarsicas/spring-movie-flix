@@ -1,4 +1,4 @@
-CREATE TABLE releases (
+CREATE TABLE title_releases (
 	id BIGSERIAL PRIMARY KEY,
     external_id BIGSERIAL,
 	title VARCHAR(255) NOT NULL,
