@@ -55,9 +55,8 @@ public class TitlesController {
 
     @GetMapping("/search")
     public ResponseEntity<List<TitleSearchDto>> search(
-            @RequestParam String query,
-            @RequestParam(required = false, defaultValue = "false") Boolean useCache) {
-        var results = titlesService.searchTitles(query, useCache).stream()
+            @RequestParam String query) {
+        var results = titlesService.searchTitles(query).stream()
                 .map(TitleSearchDto::new)
                 .toList();
         return ResponseEntity.ok(results);

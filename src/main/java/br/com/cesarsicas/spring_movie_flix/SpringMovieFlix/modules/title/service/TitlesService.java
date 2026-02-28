@@ -73,13 +73,7 @@ public class TitlesService {
         return details;
     }
 
-    public List<TitleSearch> searchTitles(String query, Boolean useCache) {
-        if (Boolean.TRUE.equals(useCache)) {
-            return titleReleaseRepository.findByTitleContainingIgnoreCase(query).stream()
-                    .map(ReleaseMapper::toDomain)
-                    .map(ReleaseToTitleSearchMapper::toTitleSearch)
-                    .toList();
-        }
+    public List<TitleSearch> searchTitles(String query) {
         return watchModeApi.getTitleSearch(query).results().stream()
                 .map(TitleSearchMapper::toDomain)
                 .toList();
