@@ -18,41 +18,6 @@ public record TitleReleasesDto(
         String source_name,
         Integer is_original
 ){
-
-    public TitleReleasesDto(ReleaseRemote releaseRemote) {
-        this(
-                0L,
-                releaseRemote.id(),  // API id is external_id; no local id when from remote
-                releaseRemote.title(),
-                releaseRemote.type(),
-                releaseRemote.imdb_id(),
-                releaseRemote.tmdb_id(),
-                releaseRemote.tmdb_type(),
-                releaseRemote.season_number(),
-                releaseRemote.poster_url(),
-                releaseRemote.source_release_date(),
-                releaseRemote.source_id(),
-                releaseRemote.source_name(),
-                releaseRemote.is_original());
-    }
-
-    public TitleReleasesDto(TitleReleaseEntity releaseEntity) {
-        this(
-                releaseEntity.getId(),
-                releaseEntity.getExternal_id(),
-                releaseEntity.getTitle(),
-                releaseEntity.getType(),
-                releaseEntity.getImdb_id(),
-                releaseEntity.getTmdb_id(),
-                releaseEntity.getTmdb_type(),
-                releaseEntity.getSeason_number(),
-                releaseEntity.getPoster_url(),
-                releaseEntity.getSource_release_date(),
-                releaseEntity.getSource_id(),
-                releaseEntity.getSource_name(),
-                releaseEntity.getIs_original());
-    }
-
     public TitleReleasesDto(br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.domain.Release release) {
         this(
                 release.getId(),

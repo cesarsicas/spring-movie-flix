@@ -1,7 +1,5 @@
 package br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.api.dto;
 
-import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.local.TitleDetailsEntity;
-import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.remote.model.TitleDetailsResponse;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.domain.TitleDetails;
 
 import java.util.List;
@@ -9,6 +7,7 @@ import java.util.Optional;
 
 public record TitleDetailsDto(
         Long id,
+        Long externalId,
         String title,
         String original_title,
         String plot_overview,
@@ -36,40 +35,11 @@ public record TitleDetailsDto(
         Optional<Double> relevance_percentile
 ) {
 
-    public TitleDetailsDto(TitleDetailsResponse detailsResponse) {
-        this(
-                detailsResponse.id(),
-                detailsResponse.title(),
-                detailsResponse.original_title(),
-                detailsResponse.plot_overview(),
-                detailsResponse.type(),
-                detailsResponse.runtime_minutes(),
-                detailsResponse.year(),
-                detailsResponse.end_year(),
-                detailsResponse.release_date(),
-                detailsResponse.imdb_id(),
-                detailsResponse.tmdb_id(),
-                detailsResponse.tmdb_type(),
-                detailsResponse.genres(),
-                detailsResponse.genre_names(),
-                detailsResponse.user_rating(),
-                detailsResponse.critic_score(),
-                detailsResponse.us_rating(),
-                detailsResponse.poster(),
-                detailsResponse.backdrop(),
-                detailsResponse.original_language(),
-                detailsResponse.similar_titles(),
-                detailsResponse.networks(),
-                detailsResponse.network_names(),
-                detailsResponse.trailer(),
-                detailsResponse.trailer_thumbnail(),
-                detailsResponse.relevance_percentile()
-        );
-    }
 
     public TitleDetailsDto(TitleDetails details) {
         this(
                 details.id(),
+                details.externalId(),
                 details.title(),
                 details.original_title(),
                 details.plot_overview(),
@@ -95,37 +65,6 @@ public record TitleDetailsDto(
                 details.trailer(),
                 details.trailer_thumbnail(),
                 details.relevance_percentile()
-        );
-    }
-
-    public TitleDetailsDto(TitleDetailsEntity entity) {
-        this(
-                entity.getExternalId(),
-                entity.getTitle(),
-                entity.getOriginal_title(),
-                entity.getPlot_overview(),
-                entity.getType(),
-                Optional.ofNullable(entity.getRuntime_minutes()),
-                Optional.ofNullable(entity.getYear()),
-                Optional.ofNullable(entity.getEnd_year()),
-                Optional.ofNullable(entity.getRelease_date()),
-                Optional.ofNullable(entity.getImdb_id()),
-                Optional.ofNullable(entity.getTmdb_id()),
-                Optional.ofNullable(entity.getTmdb_type()),
-                toOptional(entity.getGenres()),
-                toOptional(entity.getGenre_names()),
-                Optional.ofNullable(entity.getUser_rating()),
-                Optional.ofNullable(entity.getCritic_score()),
-                Optional.ofNullable(entity.getUs_rating()),
-                Optional.ofNullable(entity.getPoster()),
-                Optional.ofNullable(entity.getBackdrop()),
-                Optional.ofNullable(entity.getOriginal_language()),
-                toOptional(entity.getSimilar_titles()),
-                toOptional(entity.getNetworks()),
-                toOptional(entity.getNetwork_names()),
-                Optional.ofNullable(entity.getTrailer()),
-                Optional.ofNullable(entity.getTrailer_thumbnail()),
-                Optional.ofNullable(entity.getRelevance_percentile())
         );
     }
 
