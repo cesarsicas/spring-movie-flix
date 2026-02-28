@@ -24,23 +24,26 @@ public class TitlesController {
 
 
    @GetMapping("/releases")
-    public ResponseEntity<List<TitleReleasesDto>> releases(@RequestParam Boolean useCache) {
+    public ResponseEntity<List<TitleReleasesDto>> releases(
+            @RequestParam(required = false, defaultValue = "false") Boolean useCache) {
         var movie = titlesService.getReleases(useCache).stream()
                 .map(TitleReleasesDto::new)
                 .toList();
         return ResponseEntity.ok(movie);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<TitleDetailsDto> details(@PathVariable long id) {
-        var details = titlesService.getTitleDetails(id);
+    @GetMapping("/{externalId}")
+    public ResponseEntity<TitleDetailsDto> details(
+            @PathVariable long externalId,
+            @RequestParam(required = false, defaultValue = "false") Boolean useCache) {
+        var details = titlesService.getTitleDetails(externalId, useCache);
         return ResponseEntity.ok(new TitleDetailsDto(details));
     }
 
-    @GetMapping("/{id}/reviews")
-    public ResponseEntity<List<GetReviewDto>> getReviews(@PathVariable Long id) {
+    @GetMapping("/{externalId}/reviews")
+    public ResponseEntity<List<GetReviewDto>> getReviews(@PathVariable Long externalId) {
         try {
-            var reviews = reviewsService.getReviewsByExternalTitleId(id).stream()
+            var reviews = reviewsService.getReviewsByExternalTitleId(externalId).stream()
                     .map(GetReviewDto::new)
                     .toList();
             return ResponseEntity.ok(reviews);
@@ -51,7 +54,8 @@ public class TitlesController {
 
 
     @GetMapping("/search")
-    public ResponseEntity<List<TitleSearchDto>> search(@RequestParam String query) {
+    public ResponseEntity<List<TitleSearchDto>> search(
+            @RequestParam String query) {
         var results = titlesService.searchTitles(query).stream()
                 .map(TitleSearchDto::new)
                 .toList();

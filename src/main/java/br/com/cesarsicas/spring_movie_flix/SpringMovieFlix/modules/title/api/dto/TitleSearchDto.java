@@ -13,20 +13,6 @@ public record TitleSearchDto(
         String tmdb_type,
         String image_url
 ){
-
-    public TitleSearchDto(br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.remote.model.TitleSearch release){
-         this(
-                release.name(),
-                release.relevance(),
-                release.type(),
-                release.id(),
-                release.year(),
-                release.result_type(),
-                release.tmdb_id(),
-                release.tmdb_type(),
-                release.image_url());
-    }
-
     public TitleSearchDto(TitleSearch search) {
         this(
                 search.name(),

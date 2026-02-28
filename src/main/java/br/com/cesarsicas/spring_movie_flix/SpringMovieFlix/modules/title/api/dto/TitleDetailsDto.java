@@ -1,6 +1,5 @@
 package br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.api.dto;
 
-import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.remote.model.TitleDetailsResponse;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.domain.TitleDetails;
 
 import java.util.List;
@@ -8,6 +7,7 @@ import java.util.Optional;
 
 public record TitleDetailsDto(
         Long id,
+        Long externalId,
         String title,
         String original_title,
         String plot_overview,
@@ -35,40 +35,11 @@ public record TitleDetailsDto(
         Optional<Double> relevance_percentile
 ) {
 
-    public TitleDetailsDto(TitleDetailsResponse detailsResponse) {
-        this(
-                detailsResponse.id(),
-                detailsResponse.title(),
-                detailsResponse.original_title(),
-                detailsResponse.plot_overview(),
-                detailsResponse.type(),
-                detailsResponse.runtime_minutes(),
-                detailsResponse.year(),
-                detailsResponse.end_year(),
-                detailsResponse.release_date(),
-                detailsResponse.imdb_id(),
-                detailsResponse.tmdb_id(),
-                detailsResponse.tmdb_type(),
-                detailsResponse.genres(),
-                detailsResponse.genre_names(),
-                detailsResponse.user_rating(),
-                detailsResponse.critic_score(),
-                detailsResponse.us_rating(),
-                detailsResponse.poster(),
-                detailsResponse.backdrop(),
-                detailsResponse.original_language(),
-                detailsResponse.similar_titles(),
-                detailsResponse.networks(),
-                detailsResponse.network_names(),
-                detailsResponse.trailer(),
-                detailsResponse.trailer_thumbnail(),
-                detailsResponse.relevance_percentile()
-        );
-    }
 
     public TitleDetailsDto(TitleDetails details) {
         this(
                 details.id(),
+                details.externalId(),
                 details.title(),
                 details.original_title(),
                 details.plot_overview(),
@@ -95,6 +66,10 @@ public record TitleDetailsDto(
                 details.trailer_thumbnail(),
                 details.relevance_percentile()
         );
+    }
+
+    private static <T> Optional<List<T>> toOptional(List<T> list) {
+        return (list == null || list.isEmpty()) ? Optional.empty() : Optional.of(list);
     }
 
 }

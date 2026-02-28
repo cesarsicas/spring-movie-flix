@@ -1,4 +1,5 @@
 package br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.mappers;
+import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.remote.model.ReleaseRemote;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.remote.model.ReleaseResponse;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.domain.Release;
 
@@ -13,21 +14,22 @@ public class ReleaseResponseMapper {
                 .collect(Collectors.toList());
     }
 
-    public static Release toDomain(br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.remote.model.Release release) {
-        if (release == null) return null;
+    public static Release toDomain(ReleaseRemote releaseRemote) {
+        if (releaseRemote == null) return null;
+        // API id is the external id; domain id (local/DB) is not set when mapping from remote
         return new Release(
-            release.id(),
-            release.title(),
-            release.type(),
-            release.imdb_id(),
-            release.tmdb_id(),
-            release.tmdb_type(),
-            release.season_number(),
-            release.poster_url(),
-            release.source_release_date(),
-            release.source_id(),
-            release.source_name(),
-            release.is_original()
+            releaseRemote.id(),  // -> domain.external_id
+            releaseRemote.title(),
+            releaseRemote.type(),
+            releaseRemote.imdb_id(),
+            releaseRemote.tmdb_id(),
+            releaseRemote.tmdb_type(),
+            releaseRemote.season_number(),
+            releaseRemote.poster_url(),
+            releaseRemote.source_release_date(),
+            releaseRemote.source_id(),
+            releaseRemote.source_name(),
+            releaseRemote.is_original()
         );
     }
 }

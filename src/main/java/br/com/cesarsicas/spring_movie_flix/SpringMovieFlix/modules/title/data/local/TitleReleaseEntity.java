@@ -1,22 +1,22 @@
 package br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.local;
 
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.domain.Release;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
-@Table(name = "releases")
-@Entity(name = "release")
+@Table(name = "title_releases", uniqueConstraints = @UniqueConstraint(columnNames = "external_id"))
+@Entity(name = "TitleRelease")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
-public class ReleaseEntity {
+public class TitleReleaseEntity {
 
     @Id
-    private int id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+    private long external_id;
     private String title;
     private String type;
     private String imdb_id;
@@ -29,8 +29,9 @@ public class ReleaseEntity {
     private String source_name;
     private Integer is_original;
 
-    public ReleaseEntity(Release release) {
+    public TitleReleaseEntity(Release release) {
         this.id = release.getId();
+        this.external_id = release.getExternal_id();
         this.title = release.getTitle();
         this.type = release.getType();
         this.imdb_id = release.getImdb_id();

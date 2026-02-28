@@ -6,7 +6,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Release {
-    private int id;
+    private long id;
+    private long external_id;
     private String title;
     private String type;
     private String imdb_id;
@@ -19,10 +20,11 @@ public class Release {
     private String source_name;
     private Integer is_original;
 
-    public Release() {}
+    public Release() {
+    }
 
-    public Release(int id, String title, String type, String imdb_id, Integer tmdb_id, String tmdb_type, Integer season_number, String poster_url, String source_release_date, Integer source_id, String source_name, Integer is_original) {
-        this.id = id;
+    public Release(long external_id, String title, String type, String imdb_id, Integer tmdb_id, String tmdb_type, Integer season_number, String poster_url, String source_release_date, Integer source_id, String source_name, Integer is_original) {
+        this.external_id = external_id;
         this.title = title;
         this.type = type;
         this.imdb_id = imdb_id;

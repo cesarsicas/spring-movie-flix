@@ -1,13 +1,13 @@
 package br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.mappers;
 
-import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.local.ReleaseEntity;
+import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.local.TitleReleaseEntity;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.domain.Release;
 
 public class ReleaseMapper {
-    public static Release toDomain(ReleaseEntity entity) {
+    public static Release toDomain(TitleReleaseEntity entity) {
         if (entity == null) return null;
-        return new Release(
-            entity.getId(),
+        var release = new Release(
+            entity.getExternal_id(),  // external_id (API id), not entity.getId()
             entity.getTitle(),
             entity.getType(),
             entity.getImdb_id(),
@@ -20,5 +20,7 @@ public class ReleaseMapper {
             entity.getSource_name(),
             entity.getIs_original()
         );
+        release.setId(entity.getId());
+        return release;
     }
 }

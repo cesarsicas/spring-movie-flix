@@ -1,6 +1,6 @@
 package br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.remote.model;
 
-public record Release(
+public record ReleaseRemote(
         int id,
         String title,
         String type,
