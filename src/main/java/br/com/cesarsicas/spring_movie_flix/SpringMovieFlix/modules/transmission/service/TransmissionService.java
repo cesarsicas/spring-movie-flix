@@ -43,4 +43,11 @@ public class TransmissionService {
 
         return transmissionRepository.save(transmission);
     }
+
+    public void stopTransmission() {
+        var transmission = transmissionRepository.findByIsActiveTrue()
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No active transmission"));
+        transmission.setActive(false);
+        transmissionRepository.save(transmission);
+    }
 }

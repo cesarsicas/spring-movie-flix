@@ -41,4 +41,10 @@ public class TransmissionController {
         var transmission = service.startTransmission(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(new TransmissionDto(transmission));
     }
+
+    @PatchMapping("/current/stop")
+    public ResponseEntity<Void> stopTransmission() {
+        service.stopTransmission();
+        return ResponseEntity.noContent().build();
+    }
 }
