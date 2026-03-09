@@ -1,5 +1,6 @@
 package br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.transmission.service;
 
+import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.infra.LiveStreamService;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.transmission.data.TransmissionMovieRepository;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.transmission.api.dto.CreateTransmissionDto;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.transmission.data.TransmissionEntity;
@@ -9,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -20,6 +22,9 @@ public class TransmissionService {
 
     @Autowired
     private TransmissionMovieRepository movieRepository;
+
+    @Autowired
+    private LiveStreamService liveStreamService;
 
     public Optional<TransmissionEntity> getCurrentTransmission() {
         return transmissionRepository.findByIsActiveTrue();
@@ -41,7 +46,17 @@ public class TransmissionService {
                 true
         );
 
-        return transmissionRepository.save(transmission);
+        var saved = transmissionRepository.save(transmission);
+
+        try {
+            liveStreamService.start();
+        } catch (IOException e) {
+            saved.setActive(false);
+            transmissionRepository.save(saved);
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to start live stream");
+        }
+
+        return saved;
     }
 
     public void stopTransmission() {
@@ -49,5 +64,6 @@ public class TransmissionService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No active transmission"));
         transmission.setActive(false);
         transmissionRepository.save(transmission);
+        liveStreamService.stop();
     }
 }

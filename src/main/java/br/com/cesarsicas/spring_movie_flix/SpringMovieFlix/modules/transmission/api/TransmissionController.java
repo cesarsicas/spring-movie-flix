@@ -36,13 +36,13 @@ public class TransmissionController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @PostMapping
+    @PostMapping("/start")
     public ResponseEntity<TransmissionDto> startTransmission(@RequestBody @Valid CreateTransmissionDto dto) {
         var transmission = service.startTransmission(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(new TransmissionDto(transmission));
     }
 
-    @PatchMapping("/current/stop")
+    @PatchMapping("/stop")
     public ResponseEntity<Void> stopTransmission() {
         service.stopTransmission();
         return ResponseEntity.noContent().build();

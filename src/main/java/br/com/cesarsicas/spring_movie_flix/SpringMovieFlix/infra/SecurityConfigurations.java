@@ -38,6 +38,7 @@ public class SecurityConfigurations {
                         authorize
                                 .requestMatchers(HttpMethod.POST, "/auth/**").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/titles/**").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/live/**").permitAll()
                                 .requestMatchers( "/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**").permitAll()
 
 
