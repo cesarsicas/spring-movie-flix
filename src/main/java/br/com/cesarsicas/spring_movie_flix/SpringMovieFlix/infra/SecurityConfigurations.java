@@ -52,6 +52,7 @@ public class SecurityConfigurations {
                                 .requestMatchers(HttpMethod.POST, "/reviews/**").hasAnyAuthority(RolePermissions.DEFAULT_CREATE.name())
                                 .requestMatchers(HttpMethod.GET, "/reviews/**").hasAnyAuthority(RolePermissions.DEFAULT_CREATE.name())
 
+                                .requestMatchers(HttpMethod.GET, "/transmissions/current").permitAll()
                                 .requestMatchers("/transmissions/**").hasAnyRole(Role.ADMIN.name())
                                 .requestMatchers(HttpMethod.GET, "/transmissions/**").hasAnyAuthority(RolePermissions.ADMIN_READ.name())
                                 .requestMatchers(HttpMethod.POST, "/transmissions/**").hasAnyAuthority(RolePermissions.ADMIN_CREATE.name())
