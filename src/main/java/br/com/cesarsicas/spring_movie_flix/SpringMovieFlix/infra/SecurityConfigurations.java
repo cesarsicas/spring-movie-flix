@@ -38,6 +38,7 @@ public class SecurityConfigurations {
                         authorize
                                 .requestMatchers(HttpMethod.POST, "/auth/**").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/titles/**").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/live/**").permitAll()
                                 .requestMatchers( "/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**").permitAll()
 
 
@@ -51,6 +52,10 @@ public class SecurityConfigurations {
                                 .requestMatchers(HttpMethod.POST, "/reviews/**").hasAnyAuthority(RolePermissions.DEFAULT_CREATE.name())
                                 .requestMatchers(HttpMethod.GET, "/reviews/**").hasAnyAuthority(RolePermissions.DEFAULT_CREATE.name())
 
+                                .requestMatchers(HttpMethod.GET, "/transmissions/current").permitAll()
+                                .requestMatchers("/transmissions/**").hasAnyRole(Role.ADMIN.name())
+                                .requestMatchers(HttpMethod.GET, "/transmissions/**").hasAnyAuthority(RolePermissions.ADMIN_READ.name())
+                                .requestMatchers(HttpMethod.POST, "/transmissions/**").hasAnyAuthority(RolePermissions.ADMIN_CREATE.name())
 
                                 .anyRequest().authenticated())
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
@@ -73,7 +78,7 @@ public class SecurityConfigurations {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(List.of("http://localhost:5173"));
 
-        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD"));
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS", "HEAD"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowCredentials(true); // Must be true to use Authorization header
 
