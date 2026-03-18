@@ -157,4 +157,38 @@ public class TitlesController {
         HttpStatus status = (rangeHeader != null) ? HttpStatus.PARTIAL_CONTENT : HttpStatus.OK;
         return ResponseEntity.status(status).headers(headers).body(video.data());
     }
+
+    //todo: externalId is not being used yet
+    //the video returned is not dynamic
+    @GetMapping("/{externalId}/stream")
+    public ResponseEntity<byte[]> getVideoById(
+            @PathVariable Long externalId,
+            @RequestHeader(value = "Range", required = false) String rangeHeader) throws IOException {
+
+        long start = 0;
+        long end = -1;
+
+        if (rangeHeader != null && rangeHeader.startsWith("bytes=")) {
+            String[] ranges = rangeHeader.substring(6).split("-");
+            start = Long.parseLong(ranges[0]);
+            if (ranges.length > 1 && !ranges[1].isEmpty()) {
+                end = Long.parseLong(ranges[1]);
+            }
+        }
+
+        var chunk = titlesService.getVideoChunk(start, end);
+        if (chunk.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        var video = chunk.get();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.parseMediaType("video/mp4"));
+        headers.add("Content-Range", "bytes " + video.start() + "-" + video.end() + "/" + video.fileSize());
+        headers.add("Accept-Ranges", "bytes");
+        headers.setContentLength(video.data().length);
+
+        HttpStatus status = (rangeHeader != null) ? HttpStatus.PARTIAL_CONTENT : HttpStatus.OK;
+        return ResponseEntity.status(status).headers(headers).body(video.data());
+    }
 }
