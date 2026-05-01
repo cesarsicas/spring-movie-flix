@@ -10,7 +10,7 @@ public class TitleListItemEntityMapper {
         return new TitleListItem(
                 entity.getId(),
                 entity.getExternalId(),
-                entity.getName(),
+                entity.getTitle(),
                 entity.getType(),
                 entity.getYear(),
                 entity.getImdb_id(),
@@ -23,7 +23,7 @@ public class TitleListItemEntityMapper {
         if (domain == null) return null;
         var entity = new TitleListItemEntity();
         entity.setExternalId(domain.externalId());
-        entity.setName(domain.name());
+        entity.setTitle(domain.title());
         entity.setType(domain.type());
         entity.setYear(domain.year());
         entity.setImdb_id(domain.imdb_id());

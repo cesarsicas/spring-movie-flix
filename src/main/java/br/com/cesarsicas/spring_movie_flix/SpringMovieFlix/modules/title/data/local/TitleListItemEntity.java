@@ -19,7 +19,7 @@ public class TitleListItemEntity {
     @Column(name = "external_id", nullable = false, unique = true)
     private Long externalId;
 
-    private String name;
+    private String title;
     private String type;
     private Integer year;
     private String imdb_id;

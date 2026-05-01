@@ -77,7 +77,7 @@ public class TitlesController {
             @RequestParam(required = false) Integer person_id,
             @RequestParam(required = false, defaultValue = "relevance_desc") String sort_by,
             @RequestParam(required = false, defaultValue = "1") Integer page,
-            @RequestParam(required = false, defaultValue = "250") Integer limit,
+            @RequestParam(required = false, defaultValue = "10") Integer limit,
             @RequestParam(required = false, defaultValue = "false") Boolean useCache) {
         var result = titlesService.listTitles(types, source_ids, genres, regions, source_types,
                 network_ids, languages, release_date_start, release_date_end,

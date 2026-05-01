@@ -142,7 +142,7 @@ public class TitlesService {
             Long dbId = titleListItemRepository.findByExternalId(item.externalId())
                     .map(TitleListItemEntity::getId)
                     .orElse(null);
-            return new TitleListItem(dbId, item.externalId(), item.name(), item.type(),
+            return new TitleListItem(dbId, item.externalId(), item.title(), item.type(),
                     item.year(), item.imdb_id(), item.tmdb_id(), item.tmdb_type());
         }).toList();
 

@@ -10,7 +10,7 @@ public class TitleListItemMapper {
         return new TitleListItem(
                 null,
                 remote.id(),
-                remote.name(),
+                remote.title(),
                 remote.type(),
                 remote.year(),
                 remote.imdb_id(),

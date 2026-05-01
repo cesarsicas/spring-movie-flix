@@ -3,7 +3,7 @@ package br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.domain
 public record TitleListItem(
         Long id,
         Long externalId,
-        String name,
+        String title,
         String type,
         Integer year,
         String imdb_id,

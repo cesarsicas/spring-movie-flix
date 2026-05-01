@@ -5,7 +5,7 @@ import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.domain.
 public record TitleListItemDto(
         Long id,
         Long externalId,
-        String name,
+        String title,
         String type,
         Integer year,
         String imdb_id,
@@ -13,7 +13,7 @@ public record TitleListItemDto(
         String tmdb_type
 ) {
     public TitleListItemDto(TitleListItem domain) {
-        this(domain.id(), domain.externalId(), domain.name(), domain.type(),
+        this(domain.id(), domain.externalId(), domain.title(), domain.type(),
                 domain.year(), domain.imdb_id(), domain.tmdb_id(), domain.tmdb_type());
     }
 }
