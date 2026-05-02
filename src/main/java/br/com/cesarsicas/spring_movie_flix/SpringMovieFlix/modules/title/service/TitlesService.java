@@ -1,5 +1,7 @@
 package br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.service;
 
+import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.local.GenreEntity;
+import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.local.GenreRepository;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.local.PersonRepository;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.local.TitleDetailsRepository;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.local.TitleListItemEntity;
@@ -10,6 +12,7 @@ import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.ma
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.mappers.PersonRemoteMapper;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.mappers.ReleaseMapper;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.mappers.ReleaseResponseMapper;
+import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.mappers.GenreMapper;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.mappers.SearchResultMapper;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.mappers.TitleDetailsEntityMapper;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.mappers.TitleDetailsResponseMapper;
@@ -19,6 +22,7 @@ import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.re
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.remote.model.AutocompleteFilterResultType;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.remote.model.AutocompleteSearchResponse;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.remote.model.SearchField;
+import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.domain.Genre;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.domain.Person;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.domain.Release;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.domain.SearchResult;
@@ -57,6 +61,9 @@ public class TitlesService {
 
     @Autowired
     PersonRepository personRepository;
+
+    @Autowired
+    GenreRepository genreRepository;
 
     public List<Release> getReleases(Boolean useCache) {
         if (useCache){
@@ -97,6 +104,27 @@ public class TitlesService {
         titleDetailsRepository.findByExternalId(externalId).ifPresent(existing -> entity.setId(existing.getId()));
         titleDetailsRepository.save(entity);
         return details;
+    }
+
+    public List<Genre> getGenres(Boolean useCache) {
+        if (Boolean.TRUE.equals(useCache)) {
+            return genreRepository.findAll().stream().map(GenreMapper::toDomain).toList();
+        }
+
+        var remote = watchModeApi.getGenres();
+        var genres = remote.stream().map(GenreMapper::toDomain).toList();
+
+        var existingIds = Set.copyOf(
+                genreRepository.findExternalIdsByExternalIdIn(
+                        genres.stream().map(Genre::externalId).toList()));
+
+        var newEntities = genres.stream()
+                .filter(g -> !existingIds.contains(g.externalId()))
+                .map(GenreMapper::toEntity)
+                .toList();
+        genreRepository.saveAll(newEntities);
+
+        return genreRepository.findAll().stream().map(GenreMapper::toDomain).toList();
     }
 
     public AutocompleteSearchResponse getAutocompleteSearch(String query, AutocompleteFilterResultType filterResultType) {

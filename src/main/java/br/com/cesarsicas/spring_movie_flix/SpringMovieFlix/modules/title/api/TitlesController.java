@@ -3,6 +3,7 @@ package br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.api;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.review.api.dto.GetReviewDto;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.review.service.ReviewsService;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.api.dto.AutocompleteSearchResponseDto;
+import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.api.dto.GenreDto;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.api.dto.PersonDto;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.api.dto.SearchTitlesAndPeopleResultDto;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.remote.model.AutocompleteFilterResultType;
@@ -31,6 +32,15 @@ public class TitlesController {
     @Autowired
     ReviewsService reviewsService;
 
+
+    @GetMapping("/genres")
+    public ResponseEntity<List<GenreDto>> getGenres(
+            @RequestParam(required = false, defaultValue = "false") Boolean useCache) {
+        var genres = titlesService.getGenres(useCache).stream()
+                .map(GenreDto::new)
+                .toList();
+        return ResponseEntity.ok(genres);
+    }
 
    @GetMapping("/releases")
     public ResponseEntity<List<TitleReleasesDto>> releases(

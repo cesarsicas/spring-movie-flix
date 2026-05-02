@@ -7,7 +7,11 @@ import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.re
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.remote.model.TitleListResponse;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.remote.model.AutocompleteFilterResultType;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.remote.model.AutocompleteSearchResponse;
+import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.remote.model.GenreRemote;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.remote.model.SearchField;
+
+import java.util.Arrays;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -80,6 +84,13 @@ public class WatchModeApiService {
         return restTemplate.getForObject(
                 baseUrl + "person/" + personId + "/?apiKey=" + secret,
                 PersonRemote.class);
+    }
+
+    public List<GenreRemote> getGenres() {
+        GenreRemote[] response = restTemplate.getForObject(
+                baseUrl + "genres/?apiKey=" + secret,
+                GenreRemote[].class);
+        return response != null ? Arrays.asList(response) : List.of();
     }
 
     public SearchResponse search(SearchField searchField, String searchValue, String types) {
