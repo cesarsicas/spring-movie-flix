@@ -18,6 +18,8 @@ import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.ma
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.mappers.TitleListItemMapper;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.mappers.TitleSearchMapper;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.remote.WatchModeApiService;
+import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.remote.model.AutocompleteFilterResultType;
+import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.remote.model.AutocompleteSearchResponse;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.domain.Person;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.domain.Release;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.domain.SearchResult;
@@ -97,6 +99,10 @@ public class TitlesService {
         titleDetailsRepository.findByExternalId(externalId).ifPresent(existing -> entity.setId(existing.getId()));
         titleDetailsRepository.save(entity);
         return details;
+    }
+
+    public AutocompleteSearchResponse getAutocompleteSearch(String query, AutocompleteFilterResultType filterResultType) {
+        return watchModeApi.getAutocompleteSearch(query, filterResultType);
     }
 
     public SearchResult searchTitles(String query, String searchField, String types) {

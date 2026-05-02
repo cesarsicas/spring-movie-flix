@@ -2,8 +2,10 @@ package br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.api;
 
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.review.api.dto.GetReviewDto;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.review.service.ReviewsService;
+import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.api.dto.AutocompleteSearchResponseDto;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.api.dto.PersonDto;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.api.dto.SearchResultDto;
+import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.remote.model.AutocompleteFilterResultType;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.api.dto.TitleDetailsDto;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.api.dto.TitleListResponseDto;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.api.dto.TitleReleasesDto;
@@ -92,6 +94,14 @@ public class TitlesController {
             @RequestParam(required = false, defaultValue = "false") Boolean useCache) {
         var person = titlesService.getPerson(personId, useCache);
         return ResponseEntity.ok(new PersonDto(person));
+    }
+
+    @GetMapping("/autocomplete-search")
+    public ResponseEntity<AutocompleteSearchResponseDto> autocompleteSearch(
+            @RequestParam String query,
+            @RequestParam(required = false, defaultValue = "TITLES_AND_PEOPLE") AutocompleteFilterResultType filterResultType) {
+        var result = titlesService.getAutocompleteSearch(query, filterResultType);
+        return ResponseEntity.ok(new AutocompleteSearchResponseDto(result));
     }
 
     @GetMapping("/search")

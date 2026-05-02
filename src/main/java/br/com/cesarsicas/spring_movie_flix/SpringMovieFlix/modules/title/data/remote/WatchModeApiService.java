@@ -5,7 +5,8 @@ import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.re
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.remote.model.SearchResponse;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.remote.model.TitleDetailsResponse;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.remote.model.TitleListResponse;
-import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.remote.model.TitleSearchResponse;
+import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.remote.model.AutocompleteFilterResultType;
+import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.remote.model.AutocompleteSearchResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -35,10 +36,10 @@ public class WatchModeApiService {
                 TitleDetailsResponse.class);
     }
 
-    public TitleSearchResponse getTitleSearch(String query) {
+    public AutocompleteSearchResponse getAutocompleteSearch(String query, AutocompleteFilterResultType filterResultType) {
         return restTemplate.getForObject(
-                baseUrl + "autocomplete-search/?apiKey="+secret + "&search_type=2&search_value="+query,
-                TitleSearchResponse.class);
+                baseUrl + "autocomplete-search/?apiKey=" + secret + "&search_type=" + filterResultType.value + "&search_value=" + query,
+                AutocompleteSearchResponse.class);
     }
 
     public TitleListResponse listTitles(
