@@ -104,6 +104,7 @@ Flyway migrations are in `src/main/resources/db/migration/`. Always add new sche
 | V9 | `persons` | Cached person details |
 | V10 | `title_sources` | Streaming source availability per title (FK → title_details) |
 | V11 | `title_cast_crew` | Cast and crew per title (FK → title_details) |
+| V12 | `genres` | Cached WatchMode genre list (`external_id` UNIQUE) |
 
 ---
 
@@ -111,6 +112,7 @@ Flyway migrations are in `src/main/resources/db/migration/`. Always add new sche
 
 | Method | Path | Description |
 |---|---|---|
+| `GET` | `/titles/genres` | Full genre list (optional `useCache`) |
 | `GET` | `/titles/releases` | Recent releases (optional `useCache`) |
 | `GET` | `/titles/list` | Filtered title list (many optional params) |
 | `GET` | `/titles/search` | Search by `search_value` + `searchField` enum (required), optional `types` |

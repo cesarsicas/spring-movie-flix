@@ -45,7 +45,7 @@ module/
 
 ## Database Schema
 
-Managed by Flyway (V1–V11):
+Managed by Flyway (V1–V12):
 
 | Table | Description |
 |---|---|
@@ -58,6 +58,7 @@ Managed by Flyway (V1–V11):
 | `persons` | Cached person details from WatchMode |
 | `title_sources` | Streaming source availability per title (Netflix, Amazon…) |
 | `title_cast_crew` | Cast and crew per title |
+| `genres` | Cached WatchMode genre list with TMDB IDs |
 | `watch_party_movies` | Watch party movie queue |
 | `transmissions` | Live HLS stream sessions |
 
@@ -90,6 +91,7 @@ Managed by Flyway (V1–V11):
 
 | Method | Path | Auth | Query params | Description |
 |---|---|---|---|---|
+| `GET` | `/titles/genres` | Public | `useCache` | Full genre list with WatchMode and TMDB IDs |
 | `GET` | `/titles/releases` | Public | `useCache` | Recent releases |
 | `GET` | `/titles/list` | Public | `types`, `genres`, `regions`, `source_ids`, `sort_by`, `page`, `limit`, … | Filtered title list |
 | `GET` | `/titles/search` | Public | `search_value`*, `searchField`*, `types` | Search by name, IMDB ID, TMDB ID, or person |
@@ -104,6 +106,19 @@ Managed by Flyway (V1–V11):
 **`searchField` values:** `name` · `imdb_id` · `tmdb_movie_id` · `tmdb_tv_id` · `tmdb_person_id`
 
 **`filterResultType` values:** `TITLES_AND_PEOPLE` (default) · `TITLES_ONLY` · `MOVIES_ONLY` · `TV_SHOWS_ONLY` · `PEOPLE_ONLY`
+
+**Example — genres (cached after first call):**
+```bash
+curl "http://localhost:8080/titles/genres"
+# subsequent calls:
+curl "http://localhost:8080/titles/genres?useCache=true"
+```
+```json
+[
+  { "id": 1, "externalId": 1, "name": "Action", "tmdb_id": 28 },
+  { "id": 2, "externalId": 7, "name": "Drama",  "tmdb_id": 18 }
+]
+```
 
 **Example — search by IMDB ID:**
 ```bash
