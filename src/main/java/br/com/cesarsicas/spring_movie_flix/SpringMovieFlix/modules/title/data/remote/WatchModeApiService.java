@@ -7,6 +7,7 @@ import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.re
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.remote.model.TitleListResponse;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.remote.model.AutocompleteFilterResultType;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.remote.model.AutocompleteSearchResponse;
+import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.remote.model.SearchField;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -32,7 +33,7 @@ public class WatchModeApiService {
 
     public TitleDetailsResponse getTitleDetails(long id) {
         return restTemplate.getForObject(
-                baseUrl + "title/" +id+"/details/?apiKey="+secret,
+                baseUrl + "title/" + id + "/details/?apiKey=" + secret + "&append_to_response=sources,cast-crew",
                 TitleDetailsResponse.class);
     }
 
@@ -81,11 +82,11 @@ public class WatchModeApiService {
                 PersonRemote.class);
     }
 
-    public SearchResponse search(String searchField, String searchValue, String types) {
+    public SearchResponse search(SearchField searchField, String searchValue, String types) {
         UriComponentsBuilder builder = UriComponentsBuilder
                 .fromHttpUrl(baseUrl + "search/")
                 .queryParam("apiKey", secret)
-                .queryParam("search_field", searchField)
+                .queryParam("search_field", searchField.name())
                 .queryParam("search_value", searchValue);
         if (types != null) builder.queryParam("types", types);
         return restTemplate.getForObject(builder.toUriString(), SearchResponse.class);

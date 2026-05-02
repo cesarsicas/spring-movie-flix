@@ -4,8 +4,9 @@ import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.review.api.dt
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.review.service.ReviewsService;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.api.dto.AutocompleteSearchResponseDto;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.api.dto.PersonDto;
-import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.api.dto.SearchResultDto;
+import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.api.dto.SearchTitlesAndPeopleResultDto;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.remote.model.AutocompleteFilterResultType;
+import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.remote.model.SearchField;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.api.dto.TitleDetailsDto;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.api.dto.TitleListResponseDto;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.api.dto.TitleReleasesDto;
@@ -105,12 +106,12 @@ public class TitlesController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<SearchResultDto> search(
-            @RequestParam String query,
-            @RequestParam(required = false, defaultValue = "name") String searchField,
+    public ResponseEntity<SearchTitlesAndPeopleResultDto> searchTitlesAndPeople(
+            @RequestParam String searchValue,
+            @RequestParam SearchField searchField,
             @RequestParam(required = false) String types) {
-        var result = titlesService.searchTitles(query, searchField, types);
-        return ResponseEntity.ok(new SearchResultDto(result));
+        var result = titlesService.searchTitlesAndPeople(searchValue, searchField, types);
+        return ResponseEntity.ok(new SearchTitlesAndPeopleResultDto(result));
     }
 
     //todo: externalId is not being used yet

@@ -1,6 +1,5 @@
 package br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.service;
 
-import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.local.PersonEntity;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.local.PersonRepository;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.local.TitleDetailsRepository;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.local.TitleListItemEntity;
@@ -16,17 +15,16 @@ import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.ma
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.mappers.TitleDetailsResponseMapper;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.mappers.TitleListItemEntityMapper;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.mappers.TitleListItemMapper;
-import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.mappers.TitleSearchMapper;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.remote.WatchModeApiService;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.remote.model.AutocompleteFilterResultType;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.remote.model.AutocompleteSearchResponse;
+import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.remote.model.SearchField;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.domain.Person;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.domain.Release;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.domain.SearchResult;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.domain.TitleDetails;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.domain.TitleListItem;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.domain.TitleListPage;
-import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.domain.TitleSearch;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.domain.VideoChunk;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -105,7 +103,7 @@ public class TitlesService {
         return watchModeApi.getAutocompleteSearch(query, filterResultType);
     }
 
-    public SearchResult searchTitles(String query, String searchField, String types) {
+    public SearchResult searchTitlesAndPeople(String query, SearchField searchField, String types) {
         return SearchResultMapper.toDomain(watchModeApi.search(searchField, query, types));
     }
 

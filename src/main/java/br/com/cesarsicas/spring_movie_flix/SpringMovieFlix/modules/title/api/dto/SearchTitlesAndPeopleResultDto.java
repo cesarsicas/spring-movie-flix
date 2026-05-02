@@ -4,11 +4,11 @@ import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.domain.
 
 import java.util.List;
 
-public record SearchResultDto(
+public record SearchTitlesAndPeopleResultDto(
         List<TitleSearchItemDto> title_results,
         List<PersonSearchItemDto> people_results
 ) {
-    public SearchResultDto(SearchResult domain) {
+    public SearchTitlesAndPeopleResultDto(SearchResult domain) {
         this(
                 domain.titleResults().stream().map(TitleSearchItemDto::new).toList(),
                 domain.peopleResults().stream().map(PersonSearchItemDto::new).toList()

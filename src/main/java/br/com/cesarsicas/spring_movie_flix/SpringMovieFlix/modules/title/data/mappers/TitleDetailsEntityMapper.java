@@ -1,7 +1,11 @@
 package br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.mappers;
 
+import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.local.CastCrewMemberEntity;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.local.TitleDetailsEntity;
+import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.local.TitleSourceEntity;
+import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.domain.CastCrewMember;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.domain.TitleDetails;
+import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.domain.TitleSource;
 
 import java.util.Collections;
 import java.util.List;
@@ -38,7 +42,9 @@ public class TitleDetailsEntityMapper {
                 toOptionalList(entity.getNetwork_names()),
                 Optional.ofNullable(entity.getTrailer()),
                 Optional.ofNullable(entity.getTrailer_thumbnail()),
-                Optional.ofNullable(entity.getRelevance_percentile())
+                Optional.ofNullable(entity.getRelevance_percentile()),
+                toOptionalList(entity.getSources()).map(list -> list.stream().map(TitleDetailsEntityMapper::toSourceDomain).toList()),
+                toOptionalList(entity.getCast()).map(list -> list.stream().map(TitleDetailsEntityMapper::toCastCrewDomain).toList())
         );
     }
 
@@ -71,7 +77,54 @@ public class TitleDetailsEntityMapper {
         entity.setTrailer(domain.trailer().orElse(null));
         entity.setTrailer_thumbnail(domain.trailer_thumbnail().orElse(null));
         entity.setRelevance_percentile(domain.relevance_percentile().orElse(null));
+
+        domain.sources().ifPresent(list -> entity.setSources(
+                list.stream().map(s -> toSourceEntity(s, entity)).toList()));
+        domain.cast().ifPresent(list -> entity.setCast(
+                list.stream().map(c -> toCastCrewEntity(c, entity)).toList()));
+
         return entity;
+    }
+
+    private static TitleSource toSourceDomain(TitleSourceEntity e) {
+        return new TitleSource(e.getSource_id(), e.getName(), e.getType(), e.getRegion(),
+                e.getIos_url(), e.getAndroid_url(), e.getWeb_url(), e.getFormat(),
+                e.getPrice(), e.getSeasons(), e.getEpisodes());
+    }
+
+    private static CastCrewMember toCastCrewDomain(CastCrewMemberEntity e) {
+        return new CastCrewMember(e.getPerson_id(), e.getType(), e.getFull_name(),
+                e.getHeadshot_url(), e.getRole(), e.getEpisode_count(), e.getOrder());
+    }
+
+    private static TitleSourceEntity toSourceEntity(TitleSource s, TitleDetailsEntity parent) {
+        var e = new TitleSourceEntity();
+        e.setTitleDetails(parent);
+        e.setSource_id(s.source_id());
+        e.setName(s.name());
+        e.setType(s.type());
+        e.setRegion(s.region());
+        e.setIos_url(s.ios_url());
+        e.setAndroid_url(s.android_url());
+        e.setWeb_url(s.web_url());
+        e.setFormat(s.format());
+        e.setPrice(s.price());
+        e.setSeasons(s.seasons());
+        e.setEpisodes(s.episodes());
+        return e;
+    }
+
+    private static CastCrewMemberEntity toCastCrewEntity(CastCrewMember c, TitleDetailsEntity parent) {
+        var e = new CastCrewMemberEntity();
+        e.setTitleDetails(parent);
+        e.setPerson_id(c.person_id());
+        e.setType(c.type());
+        e.setFull_name(c.full_name());
+        e.setHeadshot_url(c.headshot_url());
+        e.setRole(c.role());
+        e.setEpisode_count(c.episode_count());
+        e.setOrder(c.order());
+        return e;
     }
 
     @SuppressWarnings("unchecked")
