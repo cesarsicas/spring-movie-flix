@@ -65,4 +65,10 @@ public class TitleDetailsEntity {
     private String trailer;
     private String trailer_thumbnail;
     private Double relevance_percentile;
+
+    @OneToMany(mappedBy = "titleDetails", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<TitleSourceEntity> sources;
+
+    @OneToMany(mappedBy = "titleDetails", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CastCrewMemberEntity> cast;
 }

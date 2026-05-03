@@ -1,6 +1,8 @@
 package br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.api.dto;
 
+import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.domain.CastCrewMember;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.domain.TitleDetails;
+import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.domain.TitleSource;
 
 import java.util.List;
 import java.util.Optional;
@@ -32,7 +34,9 @@ public record TitleDetailsDto(
         Optional<List<String>> network_names,
         Optional<String> trailer,
         Optional<String> trailer_thumbnail,
-        Optional<Double> relevance_percentile
+        Optional<Double> relevance_percentile,
+        Optional<List<TitleSource>> sources,
+        Optional<List<CastCrewMember>> cast
 ) {
 
 
@@ -64,7 +68,9 @@ public record TitleDetailsDto(
                 details.network_names(),
                 details.trailer(),
                 details.trailer_thumbnail(),
-                details.relevance_percentile()
+                details.relevance_percentile(),
+                details.sources(),
+                details.cast()
         );
     }
 

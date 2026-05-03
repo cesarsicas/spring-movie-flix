@@ -1,11 +1,17 @@
 package br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.api;
 
-import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.review.service.ReviewsService;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.review.api.dto.GetReviewDto;
-import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.service.TitlesService;
+import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.review.service.ReviewsService;
+import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.api.dto.AutocompleteSearchResponseDto;
+import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.api.dto.GenreDto;
+import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.api.dto.PersonDto;
+import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.api.dto.SearchTitlesAndPeopleResultDto;
+import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.remote.model.AutocompleteFilterResultType;
+import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.remote.model.SearchField;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.api.dto.TitleDetailsDto;
+import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.api.dto.TitleListResponseDto;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.api.dto.TitleReleasesDto;
-import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.api.dto.TitleSearchDto;
+import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.service.TitlesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -26,6 +32,15 @@ public class TitlesController {
     @Autowired
     ReviewsService reviewsService;
 
+
+    @GetMapping("/genres")
+    public ResponseEntity<List<GenreDto>> getGenres(
+            @RequestParam(required = false, defaultValue = "false") Boolean useCache) {
+        var genres = titlesService.getGenres(useCache).stream()
+                .map(GenreDto::new)
+                .toList();
+        return ResponseEntity.ok(genres);
+    }
 
    @GetMapping("/releases")
     public ResponseEntity<List<TitleReleasesDto>> releases(
@@ -57,13 +72,56 @@ public class TitlesController {
     }
 
 
+    @GetMapping("/list")
+    public ResponseEntity<TitleListResponseDto> listTitles(
+            @RequestParam(required = false) String types,
+            @RequestParam(required = false) String source_ids,
+            @RequestParam(required = false) String genres,
+            @RequestParam(required = false) String regions,
+            @RequestParam(required = false) String source_types,
+            @RequestParam(required = false) String network_ids,
+            @RequestParam(required = false) String languages,
+            @RequestParam(required = false) Integer release_date_start,
+            @RequestParam(required = false) Integer release_date_end,
+            @RequestParam(required = false) Double user_rating_low,
+            @RequestParam(required = false) Double user_rating_high,
+            @RequestParam(required = false) Integer critic_score_low,
+            @RequestParam(required = false) Integer critic_score_high,
+            @RequestParam(required = false) Integer person_id,
+            @RequestParam(required = false, defaultValue = "relevance_desc") String sort_by,
+            @RequestParam(required = false, defaultValue = "1") Integer page,
+            @RequestParam(required = false, defaultValue = "10") Integer limit,
+            @RequestParam(required = false, defaultValue = "false") Boolean useCache) {
+        var result = titlesService.listTitles(types, source_ids, genres, regions, source_types,
+                network_ids, languages, release_date_start, release_date_end,
+                user_rating_low, user_rating_high, critic_score_low, critic_score_high,
+                person_id, sort_by, page, limit, useCache);
+        return ResponseEntity.ok(new TitleListResponseDto(result));
+    }
+
+    @GetMapping("/person/{personId}")
+    public ResponseEntity<PersonDto> getPerson(
+            @PathVariable long personId,
+            @RequestParam(required = false, defaultValue = "false") Boolean useCache) {
+        var person = titlesService.getPerson(personId, useCache);
+        return ResponseEntity.ok(new PersonDto(person));
+    }
+
+    @GetMapping("/autocomplete-search")
+    public ResponseEntity<AutocompleteSearchResponseDto> autocompleteSearch(
+            @RequestParam String query,
+            @RequestParam(required = false, defaultValue = "TITLES_AND_PEOPLE") AutocompleteFilterResultType filterResultType) {
+        var result = titlesService.getAutocompleteSearch(query, filterResultType);
+        return ResponseEntity.ok(new AutocompleteSearchResponseDto(result));
+    }
+
     @GetMapping("/search")
-    public ResponseEntity<List<TitleSearchDto>> search(
-            @RequestParam String query) {
-        var results = titlesService.searchTitles(query).stream()
-                .map(TitleSearchDto::new)
-                .toList();
-        return ResponseEntity.ok(results);
+    public ResponseEntity<SearchTitlesAndPeopleResultDto> searchTitlesAndPeople(
+            @RequestParam String searchValue,
+            @RequestParam SearchField searchField,
+            @RequestParam(required = false) String types) {
+        var result = titlesService.searchTitlesAndPeople(searchValue, searchField, types);
+        return ResponseEntity.ok(new SearchTitlesAndPeopleResultDto(result));
     }
 
     //todo: externalId is not being used yet

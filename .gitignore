@@ -38,3 +38,9 @@ out/
 
 ### Secrets ###
 src/main/resources/application.properties
+
+### Secrets ###
+src/main/resources/application.properties
+
+### Claude ###
+.claude/plans/

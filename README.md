@@ -1,70 +1,68 @@
-# SpringMovieFlix
+# SpringMovieFlix — Backend
 
-A RESTful backend for a movie discovery and review platform. Users can browse movie releases, search titles, view details, and write reviews — all powered by the [WatchMode API](https://api.watchmode.com/) with a local PostgreSQL cache to reduce redundant external calls.
+A RESTful backend for a movie streaming and discovery platform. Users can browse releases, search titles, view full details with streaming sources and cast, write reviews, and chat with an AI movie assistant — all powered by the [WatchMode API](https://api.watchmode.com/) with a local PostgreSQL cache.
 
 ---
 
 ## Tech Stack
 
-- **Java 17** + **Spring Boot 3**
-- **Spring Security** — stateless JWT authentication
-- **Spring Data JPA** + **PostgreSQL** — persistence
-- **Flyway** — database migrations
-- **Auth0 java-jwt** — JWT token generation and validation
-- **Lombok** — boilerplate reduction
-- **Gradle** — build tool
+| Layer | Technology |
+|---|---|
+| Language | Java 17 |
+| Framework | Spring Boot 3 |
+| Security | Spring Security — stateless JWT (Auth0 java-jwt) |
+| Persistence | Spring Data JPA + PostgreSQL |
+| Migrations | Flyway |
+| Build | Gradle |
+| Boilerplate | Lombok |
 
 ---
 
 ## Architecture
 
-The project follows a layered architecture organized by feature modules:
+Feature code is organized into modules, each with four internal layers:
 
 ```
-src/main/java/.../modules/
+modules/
 ├── user_auth/       # Login, signup, JWT issuance
 ├── user/            # User entity and management
 ├── default_user/    # User profiles (name, bio)
-├── title/           # Movie data: releases, details, search
-└── review/          # User reviews for titles
+├── title/           # Releases, details, search, autocomplete, person, streaming
+├── review/          # User reviews linked to WatchMode title IDs
+├── chat/            # SSE proxy to the Python AI agent
+└── transmission/    # Live stream session management
 ```
-
-Each module is internally structured in four layers:
 
 ```
 module/
-├── api/             # Controllers and DTOs (HTTP boundary)
+├── api/             # @RestController + DTOs  (HTTP boundary only)
 ├── service/         # Business logic
-├── data/            # Entities, repositories, mappers, remote clients
-└── domain/          # Pure domain models (no framework dependencies)
+├── data/            # Entities, repositories, mappers, remote API clients
+└── domain/          # Pure Java models — no Spring/JPA annotations
 ```
-
-### External API Integration
-
-Movie data is fetched from the **WatchMode API**. To avoid hitting rate limits and reduce latency, responses are persisted locally in PostgreSQL the first time they are requested and served from the database on subsequent calls.
-
-### Authentication & Authorization
-
-Authentication is stateless and JWT-based. Each protected request must include a `Bearer` token in the `Authorization` header. There are two roles:
-
-| Role | Description |
-|---|---|
-| `DEFAULT` | Regular user — can create a profile and write reviews |
-| `ADMIN` | Administrative user |
 
 ---
 
 ## Database Schema
 
-Managed by Flyway (migrations V1–V5):
+Managed by Flyway (V1–V12):
 
 | Table | Description |
 |---|---|
-| `users` | Accounts with login, hashed password, role, and soft-delete flag |
-| `default_user` | User profile with name and bio |
+| `users` | Auth accounts — login, hashed password, role, soft-delete |
+| `default_user` | User profiles — name and bio |
 | `reviews` | User reviews linked to a WatchMode title ID |
-| `title_releases` | Cached release feed from WatchMode |
-| `title_details` | Cached full title details (genres, ratings, cast info stored as JSON) |
+| `title_releases` | Cached WatchMode release feed |
+| `title_details` | Cached full title metadata (genres, ratings, poster, trailer…) |
+| `title_list_items` | Cached results from the WatchMode list-titles endpoint |
+| `persons` | Cached person details from WatchMode |
+| `title_sources` | Streaming source availability per title (Netflix, Amazon…) |
+| `title_cast_crew` | Cast and crew per title |
+| `genres` | Cached WatchMode genre list with TMDB IDs |
+| `watch_party_movies` | Watch party movie queue |
+| `transmissions` | Live HLS stream sessions |
+
+`title_sources` and `title_cast_crew` are child tables of `title_details` (`ON DELETE CASCADE`). They are populated automatically when a title's details are first fetched.
 
 ---
 
@@ -74,54 +72,79 @@ Managed by Flyway (migrations V1–V5):
 
 | Method | Path | Auth | Description |
 |---|---|---|---|
+| `POST` | `/auth/login` | Public | Login and receive a JWT |
 | `POST` | `/auth/signup` | Public | Register a new user |
-| `POST` | `/auth/login` | Public | Login and receive a JWT token |
+| `POST` | `/auth/admin-login` | Public | Login as admin |
 
-**Signup body:**
+**Login / Signup body:**
 ```json
-{
-  "login": "user@example.com",
-  "password": "secret",
-  "role": "DEFAULT"
-}
+{ "login": "user@example.com", "password": "secret", "role": "DEFAULT" }
 ```
-
-**Login body:**
-```json
-{
-  "login": "user@example.com",
-  "password": "secret"
-}
-```
-
 **Login response:**
 ```json
-{
-  "token": "<jwt>"
-}
+{ "token": "<jwt>" }
 ```
 
 ---
 
 ### Titles — `/titles`
 
-| Method | Path | Auth | Description |
-|---|---|---|---|
-| `GET` | `/titles/releases` | Public | List recent movie/show releases |
-| `GET` | `/titles/search?query=` | Public | Search titles by name |
-| `GET` | `/titles/{externalId}` | Public | Get full details for a title |
-| `GET` | `/titles/{externalId}/reviews` | Public | List all reviews for a title |
+| Method | Path | Auth | Query params | Description |
+|---|---|---|---|---|
+| `GET` | `/titles/genres` | Public | `useCache` | Full genre list with WatchMode and TMDB IDs |
+| `GET` | `/titles/releases` | Public | `useCache` | Recent releases |
+| `GET` | `/titles/list` | Public | `types`, `genres`, `regions`, `source_ids`, `sort_by`, `page`, `limit`, … | Filtered title list |
+| `GET` | `/titles/search` | Public | `search_value`*, `searchField`*, `types` | Search by name, IMDB ID, TMDB ID, or person |
+| `GET` | `/titles/autocomplete-search` | Public | `query`*, `filterResultType` | Autocomplete suggestions |
+| `GET` | `/titles/person/{personId}` | Public | `useCache` | Person details |
+| `GET` | `/titles/{externalId}` | Public | `useCache` | Full title details (includes sources and cast) |
+| `GET` | `/titles/{externalId}/reviews` | Public | — | Reviews for a title |
+| `GET` | `/titles/{externalId}/stream` | Public | `Range` header | Byte-range VOD video stream |
 
-> Title data is fetched from WatchMode on first request and cached locally in PostgreSQL.
+`*` = required
 
-**Example — search response item:**
+**`searchField` values:** `name` · `imdb_id` · `tmdb_movie_id` · `tmdb_tv_id` · `tmdb_person_id`
+
+**`filterResultType` values:** `TITLES_AND_PEOPLE` (default) · `TITLES_ONLY` · `MOVIES_ONLY` · `TV_SHOWS_ONLY` · `PEOPLE_ONLY`
+
+**Example — genres (cached after first call):**
+```bash
+curl "http://localhost:8080/titles/genres"
+# subsequent calls:
+curl "http://localhost:8080/titles/genres?useCache=true"
+```
+```json
+[
+  { "id": 1, "externalId": 1, "name": "Action", "tmdb_id": 28 },
+  { "id": 2, "externalId": 7, "name": "Drama",  "tmdb_id": 18 }
+]
+```
+
+**Example — search by IMDB ID:**
+```bash
+curl "http://localhost:8080/titles/search?search_value=tt0944947&searchField=imdb_id"
+```
+
+**Example — autocomplete people only:**
+```bash
+curl "http://localhost:8080/titles/autocomplete-search?query=brian+cox&filterResultType=PEOPLE_ONLY"
+```
+
+**Title details response includes:**
 ```json
 {
-  "name": "Inception",
-  "type": "movie",
   "id": 3173903,
-  "year": 2010,
-  "image_url": "https://..."
+  "title": "Breaking Bad",
+  "year": 2008,
+  "genres": [7, 5, 17],
+  "genre_names": ["Drama", "Crime", "Thriller"],
+  "user_rating": 9.3,
+  "sources": [
+    { "source_id": 203, "name": "Netflix", "type": "sub", "region": "US", "web_url": "...", "format": "HD" }
+  ],
+  "cast": [
+    { "person_id": 7121011, "type": "Cast", "full_name": "Bryan Cranston", "role": "Walter White", "episode_count": 62 }
+  ]
 }
 ```
 
@@ -131,28 +154,14 @@ Managed by Flyway (migrations V1–V5):
 
 | Method | Path | Auth | Description |
 |---|---|---|---|
-| `POST` | `/reviews` | `DEFAULT` role | Submit a review for a title |
+| `POST` | `/reviews` | `DEFAULT` | Submit a review for a title |
 
 **Body:**
 ```json
-{
-  "externalTitleId": 3173903,
-  "review": "A mind-bending masterpiece."
-}
+{ "externalTitleId": 3173903, "review": "A masterpiece." }
 ```
 
-**Response:**
-```json
-{
-  "id": 1,
-  "externalTitleId": 3173903,
-  "review": "A mind-bending masterpiece.",
-  "defaultUserId": 2,
-  "defaultUserName": "John"
-}
-```
-
-> Requires a user profile to be created first (`POST /default/me`).
+> Requires a user profile (`POST /default/me`) to be created first.
 
 ---
 
@@ -160,16 +169,30 @@ Managed by Flyway (migrations V1–V5):
 
 | Method | Path | Auth | Description |
 |---|---|---|---|
-| `GET` | `/default/me` | `DEFAULT` role | Get the authenticated user's profile |
-| `POST` | `/default/me` | `DEFAULT` role | Create or update the user's profile |
+| `GET` | `/default/me` | `DEFAULT` | Get authenticated user's profile |
+| `POST` | `/default/me` | `DEFAULT` | Create or update profile |
+| `POST` | `/default/chat` | `DEFAULT` | Stream AI chat response (SSE) |
 
-**Body:**
+**Profile body:**
 ```json
-{
-  "name": "John",
-  "bio": "Movie enthusiast."
-}
+{ "name": "John", "bio": "Movie enthusiast." }
 ```
+
+**Chat body:**
+```json
+{ "message": "Recommend me a thriller like Inception" }
+```
+> Chat responses are streamed as `text/event-stream`. The AI service (`python-agent-flix`) maintains per-user conversation history via Redis.
+
+---
+
+### Transmissions — `/transmissions`
+
+| Method | Path | Auth | Description |
+|---|---|---|---|
+| `GET` | `/transmissions/movies` | Public | List movies available for live stream |
+| `GET` | `/transmissions/current` | Public | Get current live stream info |
+| `POST` | `/transmissions/start` | `ADMIN` | Start a live HLS stream |
 
 ---
 
@@ -178,10 +201,16 @@ Managed by Flyway (migrations V1–V5):
 ### Prerequisites
 
 - Java 17+
-- PostgreSQL running on `localhost:5432`
-- A [WatchMode API key](https://api.watchmode.com/)
+- PostgreSQL on `localhost:5432`
+- [WatchMode API key](https://api.watchmode.com/)
 
-### 1. Configure environment
+### 1. Create the database
+
+```sql
+CREATE DATABASE "springboot-movie-flix";
+```
+
+### 2. Configure environment
 
 Create `src/main/resources/application.properties`:
 
@@ -192,17 +221,14 @@ spring.datasource.password=your_db_password
 
 api.security.token.secret=your_jwt_secret
 api.watchmode.key=your_watchmode_api_key
+api.agent.url=http://localhost:8081
+
+video.base-path=/path/to/videos
+live.stream.source=/path/to/source.mp4
+live.stream.output-dir=/tmp/hls-live
 
 server.port=8080
 ```
-
-### 2. Create the database
-
-```sql
-CREATE DATABASE "springboot-movie-flix";
-```
-
-Flyway will apply all migrations automatically on startup.
 
 ### 3. Run
 
@@ -210,4 +236,15 @@ Flyway will apply all migrations automatically on startup.
 ./gradlew bootRun
 ```
 
-The API will be available at `http://localhost:8080`.
+Flyway applies all migrations automatically on startup. The API is available at `http://localhost:8080`.
+
+---
+
+## Related Services
+
+| Service | Port | Repo path |
+|---|---|---|
+| Spring backend (this) | 8080 | `backend/` |
+| React frontend | 5173 | `react-movie-flix/` |
+| Python AI agent | 8081 | `python-agent-flix/` |
+| Redis (chat memory) | 6379 | — |
