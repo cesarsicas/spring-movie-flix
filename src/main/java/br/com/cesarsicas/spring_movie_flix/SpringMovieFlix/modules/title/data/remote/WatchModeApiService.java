@@ -100,6 +100,6 @@ public class WatchModeApiService {
                 .queryParam("search_field", searchField.name())
                 .queryParam("search_value", searchValue);
         if (types != null) builder.queryParam("types", types);
-        return restTemplate.getForObject(builder.toUriString(), SearchResponse.class);
+        return restTemplate.getForObject(builder.toUriString().replace("%20", "+"), SearchResponse.class);
     }
 }
