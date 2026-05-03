@@ -62,7 +62,16 @@ Cross-cutting infrastructure (security, HLS streaming) lives in `infra/`.
 
 ### WatchMode caching pattern
 
-`TitlesService` checks PostgreSQL first (`title_releases` / `title_details` tables). On a cache miss it calls `WatchModeApiService` (a simple `RestTemplate` wrapper), then persists the response before returning it. This means the WatchMode API key is only needed when data isn't already cached.
+`TitlesService` checks PostgreSQL first. On a cache miss it calls `WatchModeApiService` (a `RestTemplate` wrapper), persists the response, and returns it. The WatchMode API key is only consumed when data isn't already cached.
+
+Cached tables: `title_releases`, `title_details`, `title_list_items`, `persons`, `title_sources`, `title_cast_crew`.
+
+`getTitleDetails` always appends `append_to_response=sources,cast-crew` to the WatchMode request, so the `title_sources` and `title_cast_crew` child tables are populated on first fetch.
+
+### WatchMode enums
+
+- `SearchField` — typed enum for the `search_field` query param: `name`, `imdb_id`, `tmdb_movie_id`, `tmdb_tv_id`, `tmdb_person_id`.
+- `AutocompleteFilterResultType` — typed enum for the autocomplete `search_type` param: `TITLES_AND_PEOPLE(1)`, `TITLES_ONLY(2)`, `MOVIES_ONLY(3)`, `TV_SHOWS_ONLY(4)`, `PEOPLE_ONLY(5)`.
 
 ### Chat SSE proxy
 
@@ -80,4 +89,35 @@ Cross-cutting infrastructure (security, HLS streaming) lives in `infra/`.
 
 ## Database migrations
 
-Flyway migrations are in `src/main/resources/db/migration/`. Current migrations V1–V7 create: `users`, `default_user`, `reviews`, `title_releases`, `title_details`, `watch_party_movies`, `transmissions`. Always add new schemas as a new `V<n>__description.sql` file — never edit existing ones.
+Flyway migrations are in `src/main/resources/db/migration/`. Always add new schemas as a new `V<n>__description.sql` file — never edit existing ones.
+
+| Migration | Table | Description |
+|---|---|---|
+| V1 | `users` | Auth accounts |
+| V2 | `default_user` | User profiles |
+| V3 | `reviews` | Title reviews |
+| V4 | `title_releases` | Cached release feed |
+| V5 | `title_details` | Cached full title details |
+| V6 | `watch_party_movies` | Watch party movie list |
+| V7 | `transmissions` | Live stream sessions |
+| V8 | `title_list_items` | Cached list-titles results |
+| V9 | `persons` | Cached person details |
+| V10 | `title_sources` | Streaming source availability per title (FK → title_details) |
+| V11 | `title_cast_crew` | Cast and crew per title (FK → title_details) |
+| V12 | `genres` | Cached WatchMode genre list (`external_id` UNIQUE) |
+
+---
+
+## Title module endpoints
+
+| Method | Path | Description |
+|---|---|---|
+| `GET` | `/titles/genres` | Full genre list (optional `useCache`) |
+| `GET` | `/titles/releases` | Recent releases (optional `useCache`) |
+| `GET` | `/titles/list` | Filtered title list (many optional params) |
+| `GET` | `/titles/search` | Search by `search_value` + `searchField` enum (required), optional `types` |
+| `GET` | `/titles/autocomplete-search` | Autocomplete by `query` + optional `filterResultType` enum |
+| `GET` | `/titles/person/{personId}` | Person details (optional `useCache`) |
+| `GET` | `/titles/{externalId}` | Full title details including sources and cast (optional `useCache`) |
+| `GET` | `/titles/{externalId}/reviews` | Reviews for a title |
+| `GET` | `/titles/{externalId}/stream` | VOD byte-range video stream |

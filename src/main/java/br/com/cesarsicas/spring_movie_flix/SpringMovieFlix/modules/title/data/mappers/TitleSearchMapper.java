@@ -1,10 +1,11 @@
 package br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.mappers;
 
+import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.remote.model.AutocompleteSearch;
 import br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.domain.TitleSearch;
 
 public class TitleSearchMapper {
 
-    public static TitleSearch toDomain(br.com.cesarsicas.spring_movie_flix.SpringMovieFlix.modules.title.data.remote.model.TitleSearch remote) {
+    public static TitleSearch toDomain(AutocompleteSearch remote) {
         if (remote == null) return null;
         return new TitleSearch(
                 remote.name(),

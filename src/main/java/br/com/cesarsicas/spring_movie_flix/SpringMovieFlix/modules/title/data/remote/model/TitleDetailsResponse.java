@@ -28,7 +28,9 @@ public record TitleDetailsResponse(
         Optional<List<String>> network_names,
         Optional<String> trailer,
         Optional<String> trailer_thumbnail,
-        Optional<Double> relevance_percentile
+        Optional<Double> relevance_percentile,
+        Optional<List<TitleSourceRemote>> sources,
+        Optional<List<CastCrewMemberRemote>> cast
 ) {
 
 }

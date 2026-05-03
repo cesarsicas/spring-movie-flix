@@ -30,5 +30,7 @@ public record TitleDetails(
         Optional<List<String>> network_names,
         Optional<String> trailer,
         Optional<String> trailer_thumbnail,
-        Optional<Double> relevance_percentile
+        Optional<Double> relevance_percentile,
+        Optional<List<TitleSource>> sources,
+        Optional<List<CastCrewMember>> cast
 ) {}

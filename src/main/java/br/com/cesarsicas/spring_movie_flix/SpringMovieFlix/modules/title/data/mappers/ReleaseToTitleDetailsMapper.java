@@ -40,7 +40,9 @@ public class ReleaseToTitleDetailsMapper {
             Optional.<java.util.List<String>>empty(),
             Optional.<String>empty(),
             Optional.<String>empty(),
-            Optional.<Double>empty()
+            Optional.<Double>empty(),
+            Optional.empty(),
+            Optional.empty()
         );
     }
 }
