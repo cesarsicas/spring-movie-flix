@@ -10,6 +10,8 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
+import java.util.UUID;
+
 @RestController
 @RequestMapping("/default/chat")
 public class ChatController {
@@ -22,6 +24,7 @@ public class ChatController {
             @AuthenticationPrincipal UserEntity user,
             @RequestBody @Valid ChatRequestDto dto
     ) {
-        return chatService.streamChat(user.getId().toString(), dto.message());
+        String sessionId = user != null ? user.getId().toString() : UUID.randomUUID().toString();
+        return chatService.streamChat(sessionId, dto.message());
     }
 }

@@ -40,7 +40,7 @@ public class SecurityConfigurations {
                                 .requestMatchers(HttpMethod.GET, "/titles/**").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/live/**").permitAll()
                                 .requestMatchers( "/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**").permitAll()
-
+                                .requestMatchers(HttpMethod.POST, "/default/chat").permitAll()
 
                                 .requestMatchers("/default/**").hasAnyRole(Role.DEFAULT.name())
                                 .requestMatchers(HttpMethod.POST, "/default/**").hasAnyAuthority(RolePermissions.DEFAULT_CREATE.name())
