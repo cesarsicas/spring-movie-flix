@@ -17,6 +17,8 @@ A RESTful backend for a movie streaming and discovery platform. Users can browse
 | Boilerplate | Lombok |
 
 ---
+<img height="500" alt="image" src="https://github.com/user-attachments/assets/3d9e86f3-057b-479a-8dd8-c59262ee87b2" />
+
 
 ## Architecture
 
